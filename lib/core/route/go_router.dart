@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:house_rental_admin/connection_page.dart';
+import 'package:house_rental_admin/src/authentication/presentation/pages/document_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/otp_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/phone_number_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/signin_page.dart';
@@ -8,11 +9,12 @@ import 'package:house_rental_admin/src/errors/presentation/pages/no_internet_pag
 import 'package:house_rental_admin/src/home/presentation/pages/home_page.dart';
 
 GoRouter goRouter() {
-  return GoRouter(initialLocation: "/", routes: [
+  return GoRouter(initialLocation: "/", 
+  routes: [
     GoRoute(
       path: "/",
       name: "connectionPage",
-      builder: (context, state) => const ConnectionPage(),
+      builder: (context, state) => const DocumentSubmissionPage(owner: <String,dynamic >{},),
       routes: [
         GoRoute(
           path: "signup",
@@ -61,11 +63,13 @@ GoRouter goRouter() {
             ),
           ),
         ),
+        GoRoute(path: "document",name: "document",builder: (context, state) => 
+        const DocumentSubmissionPage(owner: <String,dynamic >{},)),
         GoRoute(
           path: "home",
           name: "homePage",
           builder: (context, state) => const HomePage(),
-          routes: [
+          routes: const [
             
           ],
         ),

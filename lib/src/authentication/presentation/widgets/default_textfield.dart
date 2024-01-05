@@ -3,7 +3,7 @@ import 'package:house_rental_admin/core/size/sizes.dart';
 import 'package:house_rental_admin/core/spacing/whitspacing.dart';
 
 class DefaultTextfield extends StatelessWidget {
-  final void Function(String)? onChanged;
+  final void Function(String?)? onChanged;
   final TextEditingController controller;
   final String? hintText;
   final String? errorText;
@@ -28,19 +28,24 @@ class DefaultTextfield extends StatelessWidget {
         children: [
           Text(label!),
           Space().height(context, 0.004),
-          SizedBox(
-            height: Sizes().height(context, 0.06),
-            child: TextField(
+         // SizedBox(
+         //   height: Sizes().height(context, 0.06),
+       //     child:
+             TextField(
+              
               keyboardType: textInputType,
               controller: controller,
               onChanged: onChanged,
               decoration: InputDecoration(
+                isDense:true,
                 errorText: errorText,
-                contentPadding: const EdgeInsets.all(10),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal:15,vertical:10),
                 hintText: hintText,
                 hintStyle: const TextStyle(color:Colors.grey),
                 //label: Text(label!),
                 border:  OutlineInputBorder(
+                  
                   borderRadius: BorderRadius.circular(Sizes().height(context,0.04)),
                   borderSide:const BorderSide(color: Colors.black26),
                 ),
@@ -54,7 +59,7 @@ class DefaultTextfield extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          //),
           Space().height(context, 0.03)
         ],
       ),

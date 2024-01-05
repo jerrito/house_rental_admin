@@ -27,6 +27,7 @@ class DocumentSubmissionPage extends StatefulWidget {
 
 class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
   final authBloc = locator<AuthenticationBloc>();
+  final formKey = GlobalKey<FormBuilderState>();
   final auth = FirebaseAuth.instance;
   String? profileURL;
   final houseGPSAddressController = TextEditingController();
@@ -43,22 +44,24 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
           context: context,
           label: "Validate",
           onPressed: () {
-            final users = {
-              "house_GPS_address": houseGPSAddressController.text,
-              "town_or_city": townOrCityController.text,
-              "role": roleController.text,
-              "phone_number": widget.owner["phoneNumber"],
-              "uid": widget.owner["uid"],
-              "first_name": widget.owner["first_name"],
-              "last_name": widget.owner["last_name"],
-              "email": widget.owner["email"],
-              "password": widget.owner["password"],
-              "profile_URL": profileURL,
-            };
+            if (formKey.currentState!.saveAndValidate() == true) {
+              final users = {
+                "house_GPS_address": houseGPSAddressController.text,
+                "town_or_city": townOrCityController.text,
+                "role": roleController.text,
+                "phone_number": widget.owner["phoneNumber"],
+                "uid": widget.owner["uid"],
+                "first_name": widget.owner["first_name"],
+                "last_name": widget.owner["last_name"],
+                "email": widget.owner["email"],
+                "password": widget.owner["password"],
+                "profile_URL": profileURL,
+              };
 
-            authBloc.add(
-              SignupEvent(users: users),
-            );
+              authBloc.add(
+                SignupEvent(users: users),
+              );
+            }
           },
         ),
         body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
@@ -88,113 +91,132 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
                 return const Center(child: CircularProgressIndicator());
               }
 
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: Sizes().height(context, 0.02)),
-                  child: Column(
-                    children: [
-                      FormBuilderField<String>(
-                          name: "profileURL",
-                          validator: (value) {
-                            if (value?.isEmpty ?? true) {
-                              return fieldRequired;
-                            }
-                            if (value!.length <= 1) {
-                              return mustBeCharacters;
-                            }
-                            return null;
-                          },
-                          builder: (context) {
-                            return CircleAvatar(
-                              radius: 45,
-                              backgroundColor: searchTextColor1,
-                              backgroundImage: profileURL != null
-                                  ? Image.asset(profileURL!).image
-                                  : Image.asset(user1Image,
-                                          width: 100, height: 100)
-                                      .image,
-                            );
-                          }),
-
-                          Space().height(context,0.04),
-
-                      //GPS Address
-                      FormBuilderField<String>(
-                          name: "GPSAddress",
-                          validator: (value) {
-                            if (value?.isEmpty ?? true) {
-                              return fieldRequired;
-                            }
-                            if (value!.length <= 1) {
-                              return mustBeCharacters;
-                            }
-                            return null;
-                          },
-                          builder: (context) {
-                            return DefaultTextfield(
-                              controller: houseGPSAddressController,
-                              label: "GPS Address",
-                              hintText: "Enter your GPS Address",
-                            );
-                          }),
-
-                      //town or city
-                      FormBuilderField<String>(
-                          name: "townOrCity",
-                          validator: (value) {
-                            if (value?.isEmpty ?? true) {
-                              return fieldRequired;
-                            }
-                            if (value!.length <= 1) {
-                              return mustBeCharacters;
-                            }
-                            return null;
-                          },
-                          builder: (context) {
-                            return DefaultTextfield(
-                              controller: townOrCityController,
-                              label: "Town or City",
-                              hintText: "Enter your Town or City",
-                            );
-                          }),
-
-                    
-                    FormBuilderField<String>(
-                          name: "profileURL",
-                          validator: (value) {
-                            if (value?.isEmpty ?? true) {
-                              return fieldRequired;
-                            }
-                            if (value!.length <= 1) {
-                              return mustBeCharacters;
-                            }
-                            return null;
-                          },
-                          builder: (context) {
-                            return Column(
-                              children: [
-                               const Text("House Document",),
-                                Container(
-                                  width: 180,height:150,
-                                  decoration:BoxDecoration(
-                                    color: searchTextColor1,
-                                    image: DecorationImage(image: 
-                                    profileURL != null
-                                      ? Image.asset(profileURL!).image
-                                      : Image.asset(user1Image,
-                                              width: 100, height: 100)
-                                          .image,)
+              return FormBuilder(
+                key: formKey,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Sizes().height(context, 0.02)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FormBuilderField<String>(
+                            name: "profileURL",
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return fieldRequired;
+                              }
+                              if (value!.length <= 1) {
+                                return mustBeCharacters;
+                              }
+                              return null;
+                            },
+                            builder: (field) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Add Profile Picture"),
+                                  Space().height(context, 0.01),
+                                  CircleAvatar(
+                                    radius: 45,
+                                    backgroundColor: searchTextColor1,
+                                    backgroundImage: profileURL != null
+                                        ? Image.asset(profileURL!).image
+                                        : Image.asset(user1Image,
+                                                width: 100, height: 100)
+                                            .image,
                                   ),
-                                 
-                                ),
-                              ],
-                            );
-                          }),
-                     
+                                ],
+                              );
+                            }),
 
-                      Space().height(context, 0.02),
-                    ],
+                        Space().height(context, 0.04),
+
+                        //GPS Address
+                        FormBuilderField<String>(
+                            name: "GPSAddress",
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return fieldRequired;
+                              }
+                              if (value!.length <= 5) {
+                                return mustBeCharacters;
+                              }
+                              return null;
+                            },
+                            builder: (context) {
+                              return DefaultTextfield(
+                                controller: houseGPSAddressController,
+                                label: "GPS Address",
+                                hintText: "Enter your GPS Address",
+                                errorText: context.errorText,
+                                onChanged: (p0) => context.didChange(p0),
+                              );
+                            }),
+
+                        //town or city
+                        FormBuilderField<String>(
+                            name: "townOrCity",
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return fieldRequired;
+                              }
+                              
+                              if (value!.length <= 1) {
+                                return mustBeCharacters;
+                              }
+                              return null;
+                            },
+                            builder: (field) {
+                              return DefaultTextfield(
+                                controller: townOrCityController,
+                                label: "Town or City",
+                                hintText: "Enter your Town or City",
+                                errorText: field.errorText,
+                                onChanged: (p0) => field.didChange(p0),
+                              );
+                            }),
+
+                        FormBuilderField<String>(
+                            name: "houseDocument",
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return fieldRequired;
+                              }
+                              if (value!.length <= 1) {
+                                return mustBeCharacters;
+                              }
+                              return null;
+                            },
+                            builder: (field) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Add House Document",
+                                  ),
+                                  Space().height(context, 0.01),
+                                  Container(
+                                    width: 180,
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: searchTextColor1,
+                                        image: DecorationImage(
+                                          image: profileURL != null
+                                              ? Image.asset(profileURL!).image
+                                              : Image.asset(cameraImage,
+                                                      width: 100, height: 100)
+                                                  .image,
+                                        )),
+                                  ),
+                                ],
+                              );
+                            }),
+
+                        Space().height(context, 0.02),
+                      ],
+                    ),
                   ),
                 ),
               );

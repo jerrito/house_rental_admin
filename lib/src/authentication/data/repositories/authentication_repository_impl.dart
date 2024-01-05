@@ -23,8 +23,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     required this.localDatasource,
   });
   @override
-  Future<Either<String, Owner?>> signIn(
-      Map<String, dynamic> params) async {
+  Future<Either<String, Owner?>> signIn(Map<String, dynamic> params) async {
     if (await networkInfo.isConnected) {
       try {
         final response = await remoteDatasource.signin(params);
@@ -34,7 +33,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         return const Left("Wrong email or password");
       }
     } else {
-      return Left(networkInfo.noNetowrkMessage);
+      return Left(networkInfo.noNetworkMessage);
     }
   }
 
@@ -57,7 +56,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         }
       }
     } else {
-      return Left(networkInfo.noNetowrkMessage);
+      return Left(networkInfo.noNetworkMessage);
     }
   }
 
@@ -86,8 +85,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
             },
             codeSent: (String verificationId, int? resendToken) async {
               await onCodeSent(verificationId, resendToken);
-
-              
             },
             codeAutoRetrievalTimeout: (String verificationId) {
               // Auto retrieval timeout
@@ -100,7 +97,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         return Left(e.toString());
       }
     } else {
-      return Left(networkInfo.noNetowrkMessage);
+      return Left(networkInfo.noNetworkMessage);
     }
   }
 
@@ -144,7 +141,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         return Left(e.toString());
       }
     } else {
-      return Left(networkInfo.noNetowrkMessage);
+      return Left(networkInfo.noNetworkMessage);
     }
   }
 
@@ -155,21 +152,19 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       final response = await remoteDatasource.verifyOTP(credential);
       return Right(response);
     } else {
-      return Left(networkInfo.noNetowrkMessage);
+      return Left(networkInfo.noNetworkMessage);
     }
   }
 
   @override
   Future<Either<String, Owner>> getCacheData() async {
-    
-      try {
-        final response = await localDatasource.getUserCachedData();
+    try {
+      final response = await localDatasource.getUserCachedData();
 
-        return Right(response);
-      } catch (e) {
-        return Left(e.toString());
-      }
-    
+      return Right(response);
+    } catch (e) {
+      return Left(e.toString());
+    }
   }
 
   @override
@@ -178,18 +173,17 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       final response = await remoteDatasource.updateUser(params);
       return Right(response);
     } else {
-      return Left(networkInfo.noNetowrkMessage);
+      return Left(networkInfo.noNetworkMessage);
     }
   }
 
   @override
-  Future<Either<String, void>> addId(
-      Map<String, dynamic> params) async {
+  Future<Either<String, void>> addId(Map<String, dynamic> params) async {
     if (await networkInfo.isConnected) {
       final response = await remoteDatasource.addId(params);
       return Right(response);
     } else {
-      return Left(networkInfo.noNetowrkMessage);
+      return Left(networkInfo.noNetworkMessage);
     }
   }
 }
