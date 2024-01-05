@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:house_rental_admin/assets/images/image_constants.dart';
 import 'package:house_rental_admin/core/size/sizes.dart';
 import 'package:house_rental_admin/core/spacing/whitspacing.dart';
+import 'package:house_rental_admin/core/strings/app_strings.dart';
+import 'package:house_rental_admin/core/theme/colors.dart';
 import 'package:house_rental_admin/core/widgets/bottom_sheet.dart';
 import 'package:house_rental_admin/locator.dart';
 import 'package:house_rental_admin/src/authentication/domain/entities/owner.dart';
@@ -11,7 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:house_rental_admin/src/home/presentation/pages/home_page.dart';
 
 class DocumentSubmissionPage extends StatefulWidget {
-  final Owner owner;
+  final Map<String, dynamic> owner;
   const DocumentSubmissionPage({
     Key? key,
     required this.owner,
@@ -24,6 +28,7 @@ class DocumentSubmissionPage extends StatefulWidget {
 class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
   final authBloc = locator<AuthenticationBloc>();
   final auth = FirebaseAuth.instance;
+  String? profileURL;
   final houseGPSAddressController = TextEditingController();
   final townOrCityController = TextEditingController();
   final roleController = TextEditingController();
@@ -38,15 +43,19 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
           context: context,
           label: "Validate",
           onPressed: () {
-           
             final users = {
               "house_GPS_address": houseGPSAddressController.text,
               "town_or_city": townOrCityController.text,
               "role": roleController.text,
-              "phone_number": widget.owner.phoneNumber,
-              "uid": widget.owner.uid ,
+              "phone_number": widget.owner["phoneNumber"],
+              "uid": widget.owner["uid"],
+              "first_name": widget.owner["first_name"],
+              "last_name": widget.owner["last_name"],
+              "email": widget.owner["email"],
+              "password": widget.owner["password"],
+              "profile_URL": profileURL,
             };
-           
+
             authBloc.add(
               SignupEvent(users: users),
             );
@@ -59,20 +68,19 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text(state.errorMessage)));
               }
-              
+
               if (state is SignupLoaded) {
                 Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) {
-                            return HomePage(
-                              uid: widget.owner.uid,
-                              isLogin: false,
-                              phoneNumber: widget.owner.phoneNumber,
-                            );
-                          }),
-                        );
-              //  GoRouter.of(context).pushReplacementNamed("homePage");
-              
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return HomePage(
+                      uid: widget.owner["uid"],
+                      isLogin: false,
+                      phoneNumber: widget.owner["phone_number"],
+                    );
+                  }),
+                );
+                //  GoRouter.of(context).pushReplacementNamed("homePage");
               }
             },
             builder: (context, state) {
@@ -86,34 +94,104 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
                       horizontal: Sizes().height(context, 0.02)),
                   child: Column(
                     children: [
-                      //firstName
-                      DefaultTextfield(
-                        controller: houseGPSAddressController,
-                        label: "GPS Address",
-                        hintText: "Enter your GPS Address",
-                      ),
+                      FormBuilderField<String>(
+                          name: "profileURL",
+                          validator: (value) {
+                            if (value?.isEmpty ?? true) {
+                              return fieldRequired;
+                            }
+                            if (value!.length <= 1) {
+                              return mustBeCharacters;
+                            }
+                            return null;
+                          },
+                          builder: (context) {
+                            return CircleAvatar(
+                              radius: 45,
+                              backgroundColor: searchTextColor1,
+                              backgroundImage: profileURL != null
+                                  ? Image.asset(profileURL!).image
+                                  : Image.asset(user1Image,
+                                          width: 100, height: 100)
+                                      .image,
+                            );
+                          }),
 
-                      //last Name
-                      DefaultTextfield(
-                        controller: townOrCityController,
-                        label: "Town or City",
-                        hintText: "Enter your Town or City",
-                      ),
+                          Space().height(context,0.04),
 
-                      //email
-                      DefaultTextfield(
-                        controller: roleController,
-                        label: "Role",
-                        hintText: "Enter your role",
-                      ),
+                      //GPS Address
+                      FormBuilderField<String>(
+                          name: "GPSAddress",
+                          validator: (value) {
+                            if (value?.isEmpty ?? true) {
+                              return fieldRequired;
+                            }
+                            if (value!.length <= 1) {
+                              return mustBeCharacters;
+                            }
+                            return null;
+                          },
+                          builder: (context) {
+                            return DefaultTextfield(
+                              controller: houseGPSAddressController,
+                              label: "GPS Address",
+                              hintText: "Enter your GPS Address",
+                            );
+                          }),
 
-                      //email
-                      DefaultTextfield(
-                        controller: houseDocumentController,
-                        label: "House Document",
-                        hintText: "Enter your House Document",
-                      ),
+                      //town or city
+                      FormBuilderField<String>(
+                          name: "townOrCity",
+                          validator: (value) {
+                            if (value?.isEmpty ?? true) {
+                              return fieldRequired;
+                            }
+                            if (value!.length <= 1) {
+                              return mustBeCharacters;
+                            }
+                            return null;
+                          },
+                          builder: (context) {
+                            return DefaultTextfield(
+                              controller: townOrCityController,
+                              label: "Town or City",
+                              hintText: "Enter your Town or City",
+                            );
+                          }),
 
+                    
+                    FormBuilderField<String>(
+                          name: "profileURL",
+                          validator: (value) {
+                            if (value?.isEmpty ?? true) {
+                              return fieldRequired;
+                            }
+                            if (value!.length <= 1) {
+                              return mustBeCharacters;
+                            }
+                            return null;
+                          },
+                          builder: (context) {
+                            return Column(
+                              children: [
+                               const Text("House Document",),
+                                Container(
+                                  width: 180,height:150,
+                                  decoration:BoxDecoration(
+                                    color: searchTextColor1,
+                                    image: DecorationImage(image: 
+                                    profileURL != null
+                                      ? Image.asset(profileURL!).image
+                                      : Image.asset(user1Image,
+                                              width: 100, height: 100)
+                                          .image,)
+                                  ),
+                                 
+                                ),
+                              ],
+                            );
+                          }),
+                     
 
                       Space().height(context, 0.02),
                     ],

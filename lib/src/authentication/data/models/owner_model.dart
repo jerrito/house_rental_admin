@@ -3,7 +3,6 @@ import 'package:house_rental_admin/src/authentication/domain/entities/owner.dart
 class OwnerModel extends Owner {
   OwnerModel({
     required super.firstName,
-    required super.middleName,
     required super.lastName,
     required super.phoneNumber,
     required super.profileURL,
@@ -19,7 +18,6 @@ class OwnerModel extends Owner {
 
   factory OwnerModel.fromJson(Map<String, dynamic> json) => OwnerModel(
         firstName: json["first_name"],
-        middleName: json["middle_name"],
         lastName: json["last_name"],
         phoneNumber: json["phone_number"],
         profileURL: json["profile_URL"],
@@ -33,10 +31,10 @@ class OwnerModel extends Owner {
         uid: json["uid"],
       );
 
-      Map<String,dynamic> toMap()=>
+      @override
+        Map<String,dynamic> toMap()=>
       {
         "first_name":firstName,
-        "middle_name":middleName,
         "last_name":lastName,
         "phone_number":phoneNumber,
         "profile_URL":profileURL,

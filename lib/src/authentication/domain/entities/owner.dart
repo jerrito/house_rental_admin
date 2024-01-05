@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 class Owner extends Equatable {
-  final String firstName,
-      middleName,
+  final String? firstName,
+  
       lastName,
       phoneNumber,
       profileURL,
@@ -16,7 +16,6 @@ class Owner extends Equatable {
 
   Owner({
     required this.firstName,
-    required this.middleName,
     required this.lastName,
     required this.phoneNumber,
     required this.profileURL,
@@ -34,7 +33,6 @@ class Owner extends Equatable {
   @override
   List<Object?> get props => [
         firstName,
-        middleName,
         lastName,
         phoneNumber,
         profileURL,
@@ -51,7 +49,6 @@ class Owner extends Equatable {
        Map<String,dynamic> toMap()=>
       {
         "first_name":firstName,
-        "middle_name":middleName,
         "last_name":lastName,
         "phone_number":phoneNumber,
         "profile_URL":profileURL,
