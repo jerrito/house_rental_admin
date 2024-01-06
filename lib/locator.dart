@@ -17,6 +17,13 @@ import 'package:house_rental_admin/src/authentication/domain/usecases/phone_numb
 import 'package:house_rental_admin/src/authentication/domain/usecases/signup.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/verify_number.dart';
 import 'package:house_rental_admin/src/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:house_rental_admin/src/home/data/data_source/localds.dart';
+import 'package:house_rental_admin/src/home/data/repository/home_repository_impl.dart';
+import 'package:house_rental_admin/src/home/domain/repository/home_repository.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/get_profile_camera.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/get_profile_gallery.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/up_load_image.dart';
+import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'src/authentication/domain/usecases/update_user.dart';
@@ -41,7 +48,34 @@ Future<void> initDependencies() async {
         verifyPhoneNumberLogin: locator()),
   );
 
+  locator.registerFactory(()=>
+  HomeBloc(
+    getProfileCamera: locator(),
+    getProfileGallery: locator(),
+    upLoadImage: locator(),
+    
+  ),
+  );
+
   //usecases
+
+locator.registerLazySingleton(
+    () => GetProfileCamera(
+      repository: locator(),
+    ),
+  );
+
+  locator.registerLazySingleton(
+    () => GetProfileGallery(
+      repository: locator(),
+    ),
+  );
+
+  locator.registerLazySingleton(
+    () => UpLoadImage(
+      repository: locator(),
+    ),
+  );
 
   locator.registerLazySingleton(
     () => Signup(
@@ -101,6 +135,15 @@ Future<void> initDependencies() async {
       localDatasource: locator(),
     ),
   );
+
+  locator.registerLazySingleton<HomeRepository>(
+    () => HomeRepositoryImpl(
+     
+      networkInfo: locator(),
+   
+      homeLocalDatasource: locator(),
+    ),
+  );
   //remoteds
 
   locator.registerLazySingleton<NetworkInfo>(
@@ -112,6 +155,12 @@ Future<void> initDependencies() async {
   locator.registerLazySingleton<AuthenticationLocalDatasource>(
     () => AuhenticationLocalDataSourceImpl(
       sharedPreferences: locator(),
+    ),
+  );
+
+  locator.registerLazySingleton<HomeLocalDatasource>(
+    () => HomeLocalDatasourceImpl(
+     
     ),
   );
 

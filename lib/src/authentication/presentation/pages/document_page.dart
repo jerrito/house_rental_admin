@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:house_rental_admin/assets/images/image_constants.dart';
+import 'package:house_rental_admin/assets/svgs/svg_constants.dart';
 import 'package:house_rental_admin/core/size/sizes.dart';
 import 'package:house_rental_admin/core/spacing/whitspacing.dart';
 import 'package:house_rental_admin/core/strings/app_strings.dart';
@@ -10,8 +12,10 @@ import 'package:house_rental_admin/core/widgets/bottom_sheet.dart';
 import 'package:house_rental_admin/locator.dart';
 import 'package:house_rental_admin/src/authentication/domain/entities/owner.dart';
 import 'package:house_rental_admin/src/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:house_rental_admin/src/authentication/presentation/widgets/build_profile_change.dart';
 import 'package:house_rental_admin/src/authentication/presentation/widgets/default_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 import 'package:house_rental_admin/src/home/presentation/pages/home_page.dart';
 
 class DocumentSubmissionPage extends StatefulWidget {
@@ -27,6 +31,7 @@ class DocumentSubmissionPage extends StatefulWidget {
 
 class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
   final authBloc = locator<AuthenticationBloc>();
+  final homeBloc = locator<HomeBloc>();
   final formKey = GlobalKey<FormBuilderState>();
   final auth = FirebaseAuth.instance;
   String? profileURL;
@@ -106,27 +111,58 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
                               if (value?.isEmpty ?? true) {
                                 return fieldRequired;
                               }
-                              if (value!.length <= 1) {
-                                return mustBeCharacters;
-                              }
+
                               return null;
                             },
                             builder: (field) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Add Profile Picture"),
-                                  Space().height(context, 0.01),
-                                  CircleAvatar(
-                                    radius: 45,
-                                    backgroundColor: searchTextColor1,
-                                    backgroundImage: profileURL != null
-                                        ? Image.asset(profileURL!).image
-                                        : Image.asset(user1Image,
-                                                width: 100, height: 100)
-                                            .image,
-                                  ),
-                                ],
+                              return InputDecorator(
+                                decoration:
+                                    InputDecoration(
+                                      
+                                      errorText: field.errorText),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Add Profile Picture"),
+                                    Space().height(context, 0.01),
+                                    SizedBox(
+                                      width: 90,
+                                      height: 90,
+                                      child: Stack(
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: CircleAvatar(
+                                              radius: 45,
+                                              backgroundColor: searchTextColor3,
+                                              backgroundImage:
+                                                  profileURL != null
+                                                      ? Image.asset(profileURL!)
+                                                          .image
+                                                      : Image.asset(user1Image,
+                                                              width: 100,
+                                                              height: 100)
+                                                          .image,
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.bottomRight,
+                                            child: GestureDetector(
+                                                onTap: () {
+                                                  buildProfileChangeBottomSheet(
+                                                    context,
+                                                    homeBloc,
+                                                   
+                                                  );
+                                                },
+                                                child: SvgPicture.asset(editSVG,
+                                                    color: housePrimaryColor)),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               );
                             }),
 
@@ -161,7 +197,7 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
                               if (value?.isEmpty ?? true) {
                                 return fieldRequired;
                               }
-                              
+
                               if (value!.length <= 1) {
                                 return mustBeCharacters;
                               }
@@ -183,34 +219,63 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
                               if (value?.isEmpty ?? true) {
                                 return fieldRequired;
                               }
-                              if (value!.length <= 1) {
-                                return mustBeCharacters;
-                              }
+
                               return null;
                             },
                             builder: (field) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Add House Document",
-                                  ),
-                                  Space().height(context, 0.01),
-                                  Container(
-                                    width: 180,
-                                    height: 150,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: searchTextColor1,
-                                        image: DecorationImage(
-                                          image: profileURL != null
-                                              ? Image.asset(profileURL!).image
-                                              : Image.asset(cameraImage,
-                                                      width: 100, height: 100)
-                                                  .image,
-                                        )),
-                                  ),
-                                ],
+                              return InputDecorator(
+                                decoration:
+                                    InputDecoration(errorText: field.errorText),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "Add House Document",
+                                    ),
+                                    Space().height(context, 0.01),
+                                    SizedBox(
+                                      width: 180,
+                                      height: 150,
+                                      child: Stack(
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Container(
+                                                width: 180,
+                                                height: 150,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  color: searchTextColor3,
+                                                  // image: DecorationImage(
+                                                  //   image: profileURL != null
+                                                  //       ? Image.asset(profileURL!)
+                                                  //           .image
+                                                  //       : Image.asset(cameraImage,
+                                                  //               width: 100,
+                                                  //               height: 100)
+                                                  //           .image,
+                                                  // )
+                                                ),
+                                                child: profileURL == null
+                                                    ? SvgPicture.asset(
+                                                        cameraSVG)
+                                                    : Image.asset(profileURL!)),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.bottomRight,
+                                            child: GestureDetector(
+                                                onTap: () {
+                                                  print("hh");
+                                                },
+                                                child: SvgPicture.asset(editSVG,
+                                                    color: housePrimaryColor)),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               );
                             }),
 
