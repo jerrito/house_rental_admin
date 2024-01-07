@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_rental_admin/core/size/sizes.dart';
 import 'package:house_rental_admin/core/spacing/whitspacing.dart';
 import 'package:house_rental_admin/core/usecase/usecase.dart';
-import 'package:house_rental_admin/src/authentication/domain/entities/owner.dart';
 import 'package:house_rental_admin/src/authentication/presentation/widgets/default_button.dart';
 import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 
-buildProfileChangeBottomSheet(
+buildHouseDocumentChangeBottomSheet(
   BuildContext context,
   HomeBloc homeBloc,
  
@@ -22,16 +21,16 @@ buildProfileChangeBottomSheet(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Space().height(context, 0.02),
-                const Text("Add Profile Picture"),
+                const Text("Add House Document Picture"),
                 Space().height(context, 0.04),
                 DefaultButton(
                           label: "Camera",
                           onPressed: () {
                             Navigator.pop(context);
                             homeBloc
-                                .add(GetProfileCameraEvent(params: NoParams()));
-                          }),
-                   
+                                .add(GetHouseDocumentCameraEvent(params: NoParams()));
+                          },),
+                    
                 Space().height(context, 0.02),
                 BlocConsumer(
                     bloc: homeBloc,
@@ -49,7 +48,7 @@ buildProfileChangeBottomSheet(
                           onPressed: () {
                             //context.pop();
                             homeBloc.add(
-                                GetProfileGalleryEvent(params: NoParams()));
+                                GetHouseDocumentGalleryEvent(params: NoParams()));
                             
                             // Navigator.pop(context);
                           });

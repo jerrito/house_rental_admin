@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:house_rental_admin/assets/svgs/svg_constants.dart';
 import 'package:house_rental_admin/core/spacing/whitspacing.dart';
 import 'package:house_rental_admin/core/strings/app_strings.dart';
 import 'package:house_rental_admin/core/widgets/bottom_sheet.dart';
@@ -133,13 +135,43 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                   
                     }
                   },
-                  builder: (context) {
-                    return DefaultTextfield(
-                      textInputType: TextInputType.number,
-                      controller: phoneNumberController,
-                      label: "Enter Phone Number",
-                      errorText: context.errorText,
-                      onChanged: (p0) => context.didChange(p0),
+                  builder: (field) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Enter Phone Number"),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              height: 35,
+                              // decoration: BoxDecoration(
+                              //   borderRadius: BorderRadius.circular(10),
+                              //   border: Border.all(
+                              //    // color: Colors.black
+                              //   )
+                              // ),
+                              child:Row(
+                                children: [
+                                  SvgPicture.asset(ghanaSVG,width: 30,),
+                                  Space().width(context, 0.005),
+                                    const Text("+233"),
+                                ],
+                              )
+                            ),
+                            SizedBox(
+                              width: 270,
+                              child: DefaultTextfield(
+                                textInputType: TextInputType.number,
+                                controller: phoneNumberController,
+                                label: "",
+                                errorText: field.errorText,
+                                onChanged: (p0) => field.didChange(p0),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     );
                   }),
               Space().height(context, 0.030),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -12,6 +14,7 @@ import 'package:house_rental_admin/core/widgets/bottom_sheet.dart';
 import 'package:house_rental_admin/locator.dart';
 import 'package:house_rental_admin/src/authentication/domain/entities/owner.dart';
 import 'package:house_rental_admin/src/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:house_rental_admin/src/authentication/presentation/widgets/build_house_document_change.dart';
 import 'package:house_rental_admin/src/authentication/presentation/widgets/build_profile_change.dart';
 import 'package:house_rental_admin/src/authentication/presentation/widgets/default_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,7 +22,7 @@ import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 import 'package:house_rental_admin/src/home/presentation/pages/home_page.dart';
 
 class DocumentSubmissionPage extends StatefulWidget {
-  final Map<String, dynamic> owner;
+  final Owner owner;
   const DocumentSubmissionPage({
     Key? key,
     required this.owner,
@@ -35,6 +38,7 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
   final formKey = GlobalKey<FormBuilderState>();
   final auth = FirebaseAuth.instance;
   String? profileURL;
+  String? houseDocumentURL;
   final houseGPSAddressController = TextEditingController();
   final townOrCityController = TextEditingController();
   final roleController = TextEditingController();
@@ -54,13 +58,14 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
                 "house_GPS_address": houseGPSAddressController.text,
                 "town_or_city": townOrCityController.text,
                 "role": roleController.text,
-                "phone_number": widget.owner["phoneNumber"],
-                "uid": widget.owner["uid"],
-                "first_name": widget.owner["first_name"],
-                "last_name": widget.owner["last_name"],
-                "email": widget.owner["email"],
-                "password": widget.owner["password"],
+                "phone_number": widget.owner.phoneNumber,
+                "uid": widget.owner.uid,
+                "first_name": widget.owner.firstName,
+                "last_name": widget.owner.lastName,
+                "email": widget.owner.email,
+                "password": widget.owner.password,
                 "profile_URL": profileURL,
+                "house_document":houseDocumentURL,
               };
 
               authBloc.add(
@@ -82,9 +87,9 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
                   context,
                   MaterialPageRoute(builder: (context) {
                     return HomePage(
-                      uid: widget.owner["uid"],
+                      uid: widget.owner.uid,
                       isLogin: false,
-                      phoneNumber: widget.owner["phone_number"],
+                      phoneNumber: widget.owner.phoneNumber,
                     );
                   }),
                 );
@@ -117,52 +122,71 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
                             builder: (field) {
                               return InputDecorator(
                                 decoration:
-                                    InputDecoration(
-                                      
-                                      errorText: field.errorText),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text("Add Profile Picture"),
-                                    Space().height(context, 0.01),
-                                    SizedBox(
-                                      width: 90,
-                                      height: 90,
-                                      child: Stack(
+                                    InputDecoration(errorText: field.errorText),
+                                child: BlocConsumer(
+                                    bloc: homeBloc,
+                                    listener: (context, state) {
+                                      if (state is GetProfileError) {
+                                        debugPrint(state.errorMessage);
+                                      }
+                                      if (state is GetProfileLoaded) {
+                                        debugPrint(state.file.path);
+                                        profileURL = state.file.path;
+                                        setState(() {});
+                                        field.didChange(profileURL);
+                                      }
+                                    },
+                                    builder: (context, state) {
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: CircleAvatar(
-                                              radius: 45,
-                                              backgroundColor: searchTextColor3,
-                                              backgroundImage:
-                                                  profileURL != null
-                                                      ? Image.asset(profileURL!)
-                                                          .image
-                                                      : Image.asset(user1Image,
-                                                              width: 100,
-                                                              height: 100)
-                                                          .image,
+                                          const Text("Add Profile Picture"),
+                                          Space().height(context, 0.01),
+                                          SizedBox(
+                                            width: 90,
+                                            height: 90,
+                                            child: Stack(
+                                              children: [
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: CircleAvatar(
+                                                    radius: 45,
+                                                    backgroundColor:
+                                                        searchTextColor3,
+                                                    backgroundImage:
+                                                        profileURL != null
+                                                            ? Image.file(File(
+                                                                    profileURL!))
+                                                                .image
+                                                            : Image.asset(
+                                                                    user1Image,
+                                                                    width: 100,
+                                                                    height: 100)
+                                                                .image,
+                                                  ),
+                                                ),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.bottomRight,
+                                                  child: GestureDetector(
+                                                      onTap: () {
+                                                        buildProfileChangeBottomSheet(
+                                                          context,
+                                                          homeBloc,
+                                                        );
+                                                      },
+                                                      child: SvgPicture.asset(
+                                                          editSVG,
+                                                          color:
+                                                              housePrimaryColor)),
+                                                )
+                                              ],
                                             ),
                                           ),
-                                          Align(
-                                            alignment: Alignment.bottomRight,
-                                            child: GestureDetector(
-                                                onTap: () {
-                                                  buildProfileChangeBottomSheet(
-                                                    context,
-                                                    homeBloc,
-                                                   
-                                                  );
-                                                },
-                                                child: SvgPicture.asset(editSVG,
-                                                    color: housePrimaryColor)),
-                                          )
                                         ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                      );
+                                    }),
                               );
                             }),
 
@@ -213,6 +237,7 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
                               );
                             }),
 
+                        //house document
                         FormBuilderField<String>(
                             name: "houseDocument",
                             validator: (value) {
@@ -226,56 +251,76 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
                               return InputDecorator(
                                 decoration:
                                     InputDecoration(errorText: field.errorText),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Add House Document",
-                                    ),
-                                    Space().height(context, 0.01),
-                                    SizedBox(
-                                      width: 180,
-                                      height: 150,
-                                      child: Stack(
+                                child: BlocConsumer(
+                                    bloc: homeBloc,
+                                    listener: (context, state) {
+                                      if (state is HouseDocumentError) {
+                                        debugPrint(state.errorMessage);
+                                      }
+                                      if (state is HouseDocumentLoaded) {
+                                        debugPrint(state.file.path);
+                                        houseDocumentURL = state.file.path;
+                                        setState(() {});
+                                        field.didChange(houseDocumentURL);
+                                      }
+                                    },
+                                    builder: (context, state) {
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: Container(
-                                                width: 180,
-                                                height: 150,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  color: searchTextColor3,
-                                                  // image: DecorationImage(
-                                                  //   image: profileURL != null
-                                                  //       ? Image.asset(profileURL!)
-                                                  //           .image
-                                                  //       : Image.asset(cameraImage,
-                                                  //               width: 100,
-                                                  //               height: 100)
-                                                  //           .image,
-                                                  // )
-                                                ),
-                                                child: profileURL == null
-                                                    ? SvgPicture.asset(
-                                                        cameraSVG)
-                                                    : Image.asset(profileURL!)),
+                                          const Text(
+                                            "Add House Document",
                                           ),
-                                          Align(
-                                            alignment: Alignment.bottomRight,
-                                            child: GestureDetector(
-                                                onTap: () {
-                                                  print("hh");
-                                                },
-                                                child: SvgPicture.asset(editSVG,
-                                                    color: housePrimaryColor)),
-                                          )
+                                          Space().height(context, 0.01),
+                                          SizedBox(
+                                            width: 180,
+                                            height: 150,
+                                            child: Stack(
+                                              children: [
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: Container(
+                                                      width: 180,
+                                                      height: 150,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                        color: searchTextColor3,
+                                                      ),
+                                                      child: houseDocumentURL ==
+                                                              null
+                                                          ? SvgPicture.asset(
+                                                              cameraSVG)
+                                                          : Image.file(
+                                                              File(
+                                                                houseDocumentURL!,
+                                                              ),
+                                                              fit: BoxFit.cover,
+                                                            )),
+                                                ),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.bottomRight,
+                                                  child: GestureDetector(
+                                                      onTap: () {
+                                                        buildHouseDocumentChangeBottomSheet(
+                                                          context,
+                                                          homeBloc,
+                                                        );
+                                                      },
+                                                      child: SvgPicture.asset(
+                                                          editSVG,
+                                                          color:
+                                                              housePrimaryColor)),
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                         ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                      );
+                                    }),
                               );
                             }),
 

@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_rental_admin/core/usecase/usecase.dart';
@@ -33,8 +34,30 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           (response) => GetProfileLoaded(file: response)));
     });
 
+    //!GET HOUSE DOCUMENT Camera
+    on<GetHouseDocumentCameraEvent>((event, emit) async {
+      final response = await getProfileCamera.call(event.params);
+      emit(
+        response.fold(
+          (error) => HouseDocumentError(errorMessage: error),
+          (response) => HouseDocumentLoaded(file: response),
+        ),
+      );
+    });
+
+    //!GET HOUSE DOCUMENT GALLERY
+    on<GetHouseDocumentGalleryEvent>((event, emit) async {
+       final response = await getProfileGallery.call(event.params);
+      emit(
+        response.fold(
+          (error) => HouseDocumentError(errorMessage: error),
+          (response) => HouseDocumentLoaded(file: response),
+        ),
+      );
+    });
+
+    //!UPLOAD IMAGE TO CLOUD STORE
     on<UpLoadImageEvent>((event, emit) async {
-     
       emit(UpLoadImageLoading());
 
       final response = await upLoadImage.call(event.params);

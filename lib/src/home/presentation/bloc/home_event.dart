@@ -12,6 +12,16 @@ class GetProfileCameraEvent extends HomeEvent {
   GetProfileCameraEvent({required this.params});
 }
 
+class GetHouseDocumentCameraEvent extends HomeEvent {
+  final NoParams params;
+  GetHouseDocumentCameraEvent({required this.params});
+}
+
+class GetHouseDocumentGalleryEvent extends HomeEvent {
+  final NoParams params;
+  GetHouseDocumentGalleryEvent({required this.params});
+}
+
 class UpLoadImageEvent extends HomeEvent {
   final Map<String, dynamic> params;
   UpLoadImageEvent({required this.params});

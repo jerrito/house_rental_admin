@@ -20,7 +20,7 @@ class AuthenticationRemoteDatasourceImpl
   AuthenticationRemoteDatasourceImpl(
       {required this.localDatasource, required this.firebaseAuth});
   final usersRef = FirebaseFirestore.instance
-      .collection('houseRentalAccount')
+      .collection('houseRentalAdminAccount')
       .withConverter<OwnerModel>(
         fromFirestore: (snapshot, _) => OwnerModel.fromJson(snapshot.data()!),
         toFirestore: (owner, _) => owner.toMap(),

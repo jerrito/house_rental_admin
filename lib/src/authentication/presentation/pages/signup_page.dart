@@ -9,6 +9,7 @@ import 'package:house_rental_admin/core/spacing/whitspacing.dart';
 import 'package:house_rental_admin/core/strings/app_strings.dart';
 import 'package:house_rental_admin/core/widgets/bottom_sheet.dart';
 import 'package:house_rental_admin/locator.dart';
+import 'package:house_rental_admin/src/authentication/domain/entities/owner.dart';
 import 'package:house_rental_admin/src/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/document_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/widgets/default_textfield.dart';
@@ -52,15 +53,22 @@ class _SignupPageState extends State<SignupPage> {
 
             var bites = utf8.encode(passwordController.text);
             var password = sha512.convert(bites);
-            final owner = {
-              "first_name": firstNameController.text,
-              "last_name": lastNameController.text,
-              "email": emailController.text,
-              "phone_number": widget.phoneNumber,
-              //"id": "",
-              "password": password.toString(),
-              "uid": widget.uid,
-            };
+            final owner = Owner(
+              firstName: firstNameController.text,
+              lastName: lastNameController.text,
+              email: emailController.text,
+              phoneNumber: widget.phoneNumber,
+              id: "",
+              password: password.toString(),
+              uid: widget.uid,
+              profileURL: "",
+              houseDocument: "",
+              houseGPSAddress: "",
+              townORCity: "",
+              role:"",
+
+
+            );
 
          Navigator.push(context,MaterialPageRoute(
       builder: (BuildContext context) =>  DocumentSubmissionPage(
