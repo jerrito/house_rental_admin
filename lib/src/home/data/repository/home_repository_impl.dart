@@ -35,19 +35,5 @@ class HomeRepositoryImpl implements HomeRepository {
     }
   }
 
-  @override
-  Future<Either<String, String>> upLoadImage(
-      Map<String, dynamic> params) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final response = await homeLocalDatasource.upLoadImage(params);
-        print(response);
-        return Right(response);
-      } catch (e) {
-        return Left(e.toString());
-      }
-    } else {
-      return Left(networkInfo.noNetworkMessage);
-    }
-  }
+ 
 }

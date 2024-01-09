@@ -22,7 +22,4 @@ class GetHouseDocumentGalleryEvent extends HomeEvent {
   GetHouseDocumentGalleryEvent({required this.params});
 }
 
-class UpLoadImageEvent extends HomeEvent {
-  final Map<String, dynamic> params;
-  UpLoadImageEvent({required this.params});
-}
+

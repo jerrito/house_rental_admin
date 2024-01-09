@@ -22,7 +22,7 @@ import 'package:house_rental_admin/src/home/data/repository/home_repository_impl
 import 'package:house_rental_admin/src/home/domain/repository/home_repository.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_camera.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_gallery.dart';
-import 'package:house_rental_admin/src/home/domain/usecases/up_load_image.dart';
+import 'package:house_rental_admin/src/authentication/domain/usecases/up_load_image.dart';
 import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,14 +45,15 @@ Future<void> initDependencies() async {
         firebaseService: locator(),
         updateUser: locator(),
         addId: locator(),
-        verifyPhoneNumberLogin: locator()),
+        verifyPhoneNumberLogin: locator(),
+            upLoadImage: locator(),
+),
   );
 
   locator.registerFactory(()=>
   HomeBloc(
     getProfileCamera: locator(),
     getProfileGallery: locator(),
-    upLoadImage: locator(),
     
   ),
   );

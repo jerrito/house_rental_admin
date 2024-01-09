@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:house_rental_admin/connection_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/document_page.dart';
+import 'package:house_rental_admin/src/authentication/presentation/pages/landing_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/otp_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/phone_number_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/signin_page.dart';
@@ -61,6 +62,13 @@ GoRouter goRouter() {
               state.uri.queryParameters["isLogin"].toString(),
             ),
           ),
+        ),
+
+        GoRoute(
+          path:"landing",
+          name:"landing",
+          builder:(context,state)=>
+         const LandingPage(),
         ),
         // GoRoute(
         //   path: "document",

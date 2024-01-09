@@ -54,23 +54,13 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
           label: "Validate",
           onPressed: () {
             if (formKey.currentState!.saveAndValidate() == true) {
-              final users = {
-                "house_GPS_address": houseGPSAddressController.text,
-                "town_or_city": townOrCityController.text,
-                "role": roleController.text,
-                "phone_number": widget.owner.phoneNumber,
-                "uid": widget.owner.uid,
-                "first_name": widget.owner.firstName,
-                "last_name": widget.owner.lastName,
-                "email": widget.owner.email,
-                "password": widget.owner.password,
-                "profile_URL": profileURL,
-                "house_document":houseDocumentURL,
-              };
 
-              authBloc.add(
-                SignupEvent(users: users),
-              );
+              Map<String,dynamic> params={
+                "phone_number":widget.owner.phoneNumber,
+                "path":profileURL,
+              };
+              authBloc.add(UpLoadImageEvent(params: params));
+             
             }
           },
         ),
@@ -81,6 +71,32 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text(state.errorMessage)));
               }
+
+              if(state is UpLoadImageError){
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(state.errorMessage)));
+              }
+
+              if(state is UpLoadImageLoaded){
+                 final users = {
+                "house_GPS_address": houseGPSAddressController.text,
+                "town_or_city": townOrCityController.text,
+                "role": roleController.text,
+                "phone_number": widget.owner.phoneNumber,
+                "uid": widget.owner.uid,
+                "first_name": widget.owner.firstName,
+                "last_name": widget.owner.lastName,
+                "email": widget.owner.email,
+                "password": widget.owner.password,
+                "profile_URL":state.imageURL ,
+                "house_document":houseDocumentURL,
+              };
+
+              authBloc.add(
+                SignupEvent(users: users),
+              );
+              }
+
 
               if (state is SignupLoaded) {
                 Navigator.push(
@@ -98,6 +114,10 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
             },
             builder: (context, state) {
               if (state is SignupLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if(state is UpLoadImageLoading){
                 return const Center(child: CircularProgressIndicator());
               }
 

@@ -95,3 +95,8 @@ final class PhoneNumberLoginEvent extends AuthenticationEvent {
   final String phoneNumber;
   const PhoneNumberLoginEvent({required this.phoneNumber});
 }
+
+class UpLoadImageEvent extends AuthenticationEvent {
+  final Map<String, dynamic> params;
+  const UpLoadImageEvent({required this.params});
+}

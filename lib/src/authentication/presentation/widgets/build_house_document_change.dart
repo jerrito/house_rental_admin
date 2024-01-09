@@ -9,7 +9,6 @@ import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 buildHouseDocumentChangeBottomSheet(
   BuildContext context,
   HomeBloc homeBloc,
- 
 ) {
   return showModalBottomSheet(
       context: context,
@@ -24,13 +23,13 @@ buildHouseDocumentChangeBottomSheet(
                 const Text("Add House Document Picture"),
                 Space().height(context, 0.04),
                 DefaultButton(
-                          label: "Camera",
-                          onPressed: () {
-                            Navigator.pop(context);
-                            homeBloc
-                                .add(GetHouseDocumentCameraEvent(params: NoParams()));
-                          },),
-                    
+                  label: "Camera",
+                  onTap: () {
+                    Navigator.pop(context);
+                    homeBloc
+                        .add(GetHouseDocumentCameraEvent(params: NoParams()));
+                  },
+                ),
                 Space().height(context, 0.02),
                 BlocConsumer(
                     bloc: homeBloc,
@@ -38,18 +37,16 @@ buildHouseDocumentChangeBottomSheet(
                       if (state is GetProfileError) {
                         debugPrint(state.errorMessage);
                       }
-                      if (state is GetProfileLoaded) {
-                       
-                      }
+                      if (state is GetProfileLoaded) {}
                     },
                     builder: (context, state) {
                       return DefaultButton(
                           label: "Gallery",
-                          onPressed: () {
+                          onTap: () {
                             //context.pop();
-                            homeBloc.add(
-                                GetHouseDocumentGalleryEvent(params: NoParams()));
-                            
+                            homeBloc.add(GetHouseDocumentGalleryEvent(
+                                params: NoParams()));
+
                             // Navigator.pop(context);
                           });
                     }),

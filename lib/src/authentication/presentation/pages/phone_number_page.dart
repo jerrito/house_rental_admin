@@ -143,7 +143,7 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Container(
+                            SizedBox(
                               height: 35,
                               // decoration: BoxDecoration(
                               //   borderRadius: BorderRadius.circular(10),

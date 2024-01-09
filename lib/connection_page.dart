@@ -62,16 +62,9 @@ class _ConnectionPageState extends State<ConnectionPage> {
         if (state is GetCacheDataError) {
           debugPrint(state.errorMessage);
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) {
-              return const PhoneNumberPage(
-                isLogin: false,
-              );
-            }),
-          );
+          
 
-          // context.goNamed("phoneNumber", );
+           context.goNamed("landing", );
         }
       },
       builder: (context, state) {

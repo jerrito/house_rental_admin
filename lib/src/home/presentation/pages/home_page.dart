@@ -4,6 +4,7 @@ import 'package:house_rental_admin/locator.dart';
 import 'package:house_rental_admin/src/authentication/domain/entities/owner.dart';
 import 'package:house_rental_admin/src/authentication/presentation/bloc/authentication_bloc.dart';
 
+import '../widgets/bottom_nav_bar.dart';
 class HomePage extends StatefulWidget {
   final String? uid;
   final bool? isLogin;
@@ -35,7 +36,7 @@ class _HomePageState extends State<HomePage> {
     //debugPrint(user?.id);
 
     return Scaffold(
-      
+      bottomNavigationBar: BottomNavigationBarWidget(index: 0,),
       body:BlocConsumer(
           bloc: authBloc,
           listener: (context, state) {

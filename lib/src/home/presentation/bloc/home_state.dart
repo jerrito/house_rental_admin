@@ -25,14 +25,4 @@ class HouseDocumentError extends HomeState {
   HouseDocumentError({required this.errorMessage});
 }
 
-class UpLoadImageLoading extends HomeState {}
 
-class UpLoadImageError extends HomeState {
-  final String errorMessage;
-  UpLoadImageError({required this.errorMessage});
-}
-
-class UpLoadImageLoaded extends HomeState {
-  final String imageURL;
-  UpLoadImageLoaded({required this.imageURL});
-}

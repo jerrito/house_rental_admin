@@ -10,6 +10,7 @@ import 'package:house_rental_admin/src/authentication/domain/usecases/signin.dar
 import 'package:house_rental_admin/src/authentication/domain/usecases/get_cache_data.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/phone_number_login.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/signup.dart';
+import 'package:house_rental_admin/src/authentication/domain/usecases/up_load_image.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/update_user.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/verify_otp.dart';
 
@@ -30,6 +31,7 @@ class AuthenticationBloc
   final UpdateUser updateUser;
   final FirebaseService firebaseService;
   final AddId addId;
+  final UpLoadImage upLoadImage;
   AuthenticationBloc(
       {required this.verifyPhoneNumberLogin,
       required this.signup,
@@ -40,7 +42,8 @@ class AuthenticationBloc
       required this.signin,
       required this.firebaseService,
       required this.updateUser,
-      required this.addId})
+      required this.addId,
+      required this.upLoadImage,})
       : super(AuthenticationInitial()) {
     on<SignupEvent>((event, emit) async {
       emit(SignupLoading());
@@ -187,6 +190,16 @@ class AuthenticationBloc
           (response) => AddIdLoaded(),
         ),
       );
+    });
+
+     //!UPLOAD IMAGE TO CLOUD STORE
+    on<UpLoadImageEvent>((event, emit) async {
+      emit(UpLoadImageLoading());
+
+      final response = await upLoadImage.call(event.params);
+
+      emit(response.fold((error) => UpLoadImageError(errorMessage: error),
+          (response) => UpLoadImageLoaded(imageURL: response)));
     });
   }
 }

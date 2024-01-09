@@ -186,4 +186,22 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Left(networkInfo.noNetworkMessage);
     }
   }
+
+
+
+  @override
+  Future<Either<String, String>> upLoadImage(
+      Map<String, dynamic> params) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final response = await localDatasource.upLoadImage(params);
+        //print(response);
+        return Right(response);
+      } catch (e) {
+        return Left(e.toString());
+      }
+    } else {
+      return Left(networkInfo.noNetworkMessage);
+    }
+  }
 }

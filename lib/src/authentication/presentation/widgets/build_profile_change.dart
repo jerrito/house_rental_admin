@@ -10,7 +10,6 @@ import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 buildProfileChangeBottomSheet(
   BuildContext context,
   HomeBloc homeBloc,
- 
 ) {
   return showModalBottomSheet(
       context: context,
@@ -25,13 +24,11 @@ buildProfileChangeBottomSheet(
                 const Text("Add Profile Picture"),
                 Space().height(context, 0.04),
                 DefaultButton(
-                          label: "Camera",
-                          onPressed: () {
-                            Navigator.pop(context);
-                            homeBloc
-                                .add(GetProfileCameraEvent(params: NoParams()));
-                          }),
-                   
+                    label: "Camera",
+                    onTap: () {
+                      Navigator.pop(context);
+                      homeBloc.add(GetProfileCameraEvent(params: NoParams()));
+                    }),
                 Space().height(context, 0.02),
                 BlocConsumer(
                     bloc: homeBloc,
@@ -39,18 +36,16 @@ buildProfileChangeBottomSheet(
                       if (state is GetProfileError) {
                         debugPrint(state.errorMessage);
                       }
-                      if (state is GetProfileLoaded) {
-                       
-                      }
+                      if (state is GetProfileLoaded) {}
                     },
                     builder: (context, state) {
                       return DefaultButton(
                           label: "Gallery",
-                          onPressed: () {
+                          onTap: () {
                             //context.pop();
                             homeBloc.add(
                                 GetProfileGalleryEvent(params: NoParams()));
-                            
+
                             // Navigator.pop(context);
                           });
                     }),
