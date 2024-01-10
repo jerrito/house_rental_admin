@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:house_rental_admin/src/authentication/presentation/widgets/default_textfield.dart';
+import 'package:house_rental_admin/src/home/presentation/widgets/bottom_nav_bar.dart';
 
 class AddHomePage extends StatefulWidget {
   const AddHomePage({super.key});
@@ -13,6 +14,7 @@ class _AddHomePageState extends State<AddHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar:  BottomNavigationBarWidget(index: 1,),
       appBar: AppBar(
         title: const Text("Add Home or Room"),
       ),
@@ -37,6 +39,7 @@ class _AddHomePageState extends State<AddHomePage> {
             hintText: "Enter home description",
             label: "Home Description",
           ),
+
 
           
 

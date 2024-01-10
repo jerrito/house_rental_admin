@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:house_rental_admin/assets/svgs/svg_constants.dart';
 
 class BottomNavigationBarWidget extends StatefulWidget {
   int index;
@@ -34,10 +35,10 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
         }
       },
       items: [
-        buildNav("", ""),
-        buildNav("", ""),
-        buildNav("", ""),
-        buildNav("", ""),
+        buildNav(callSVG, "Home"),
+        buildNav(bookMarkSVG, "Add"),
+        buildNav(editSVG, "Edit"),
+        buildNav(userSVG, "Profile"),
       ],
     );
   }
