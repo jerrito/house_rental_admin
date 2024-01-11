@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:house_rental_admin/core/network_info.dart/network_info.dart';
 import 'package:house_rental_admin/src/home/data/data_source/localds.dart';
@@ -35,5 +34,13 @@ class HomeRepositoryImpl implements HomeRepository {
     }
   }
 
- 
+  @override
+  Future<Either<String, List<XFile>>> addMultipleImage() async {
+    try {
+      final response = await homeLocalDatasource.addMultipleImage();
+      return Right(response);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
 }

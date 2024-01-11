@@ -20,6 +20,7 @@ import 'package:house_rental_admin/src/authentication/presentation/bloc/authenti
 import 'package:house_rental_admin/src/home/data/data_source/localds.dart';
 import 'package:house_rental_admin/src/home/data/repository/home_repository_impl.dart';
 import 'package:house_rental_admin/src/home/domain/repository/home_repository.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/add_multiple_image.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_camera.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_gallery.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/up_load_image.dart';
@@ -36,32 +37,38 @@ Future<void> initDependencies() async {
 
   locator.registerFactory(
     () => AuthenticationBloc(
-        firebaseAuth: locator(),
-        signup: locator(),
-        verifyNumber: locator(),
-        verifyOTP: locator(),
-        getCacheData: locator(),
-        signin: locator(),
-        firebaseService: locator(),
-        updateUser: locator(),
-        addId: locator(),
-        verifyPhoneNumberLogin: locator(),
-            upLoadImage: locator(),
-),
+      firebaseAuth: locator(),
+      signup: locator(),
+      verifyNumber: locator(),
+      verifyOTP: locator(),
+      getCacheData: locator(),
+      signin: locator(),
+      firebaseService: locator(),
+      updateUser: locator(),
+      addId: locator(),
+      verifyPhoneNumberLogin: locator(),
+      upLoadImage: locator(),
+    ),
   );
 
-  locator.registerFactory(()=>
-  HomeBloc(
-    getProfileCamera: locator(),
-    getProfileGallery: locator(),
-    
-  ),
+  locator.registerFactory(
+    () => HomeBloc(
+      getProfileCamera: locator(),
+      getProfileGallery: locator(),
+      addMultipleImage: locator(),
+    ),
   );
 
   //usecases
 
-locator.registerLazySingleton(
+  locator.registerLazySingleton(
     () => GetProfileCamera(
+      repository: locator(),
+    ),
+  );
+
+  locator.registerLazySingleton(
+    () => AddMultipleImage(
       repository: locator(),
     ),
   );
@@ -139,9 +146,7 @@ locator.registerLazySingleton(
 
   locator.registerLazySingleton<HomeRepository>(
     () => HomeRepositoryImpl(
-     
       networkInfo: locator(),
-   
       homeLocalDatasource: locator(),
     ),
   );
@@ -160,9 +165,7 @@ locator.registerLazySingleton(
   );
 
   locator.registerLazySingleton<HomeLocalDatasource>(
-    () => HomeLocalDatasourceImpl(
-     
-    ),
+    () => HomeLocalDatasourceImpl(),
   );
 
   final sharedPreference = await SharedPreferences.getInstance();

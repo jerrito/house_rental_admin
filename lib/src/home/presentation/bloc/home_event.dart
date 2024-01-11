@@ -22,4 +22,8 @@ class GetHouseDocumentGalleryEvent extends HomeEvent {
   GetHouseDocumentGalleryEvent({required this.params});
 }
 
+class AddMultipleImageEvent extends HomeEvent {
+  final NoParams params;
 
+  AddMultipleImageEvent({required this.params});
+}

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_rental_admin/core/usecase/usecase.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/add_multiple_image.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_camera.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_gallery.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/up_load_image.dart';
@@ -12,7 +13,9 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetProfileCamera getProfileCamera;
   final GetProfileGallery getProfileGallery;
+  final AddMultipleImage addMultipleImage;
   HomeBloc({
+    required this.addMultipleImage,
     required this.getProfileCamera,
     required this.getProfileGallery,
   }) : super(HomeInitState()) {
@@ -45,7 +48,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     //!GET HOUSE DOCUMENT GALLERY
     on<GetHouseDocumentGalleryEvent>((event, emit) async {
-       final response = await getProfileGallery.call(event.params);
+      final response = await getProfileGallery.call(event.params);
       emit(
         response.fold(
           (error) => HouseDocumentError(errorMessage: error),
@@ -54,6 +57,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       );
     });
 
-   
+    //!ADD MULTIPLE IMAGES
+    on<AddMultipleImageEvent>((event, emit) async {
+      final response = await addMultipleImage.call(event.params);
+
+      emit(
+        response.fold(
+          (error) => AddMultipleImageError(errorMessage: error),
+          (response) => AddMultipleImageLoaded(
+            files: response),
+          ),
+        
+      );
+    });
   }
 }

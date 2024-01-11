@@ -25,4 +25,15 @@ class HouseDocumentError extends HomeState {
   HouseDocumentError({required this.errorMessage});
 }
 
+class AddMultipleImageLoaded extends HomeState {
+  final List<XFile> files;
 
+  AddMultipleImageLoaded({required this.files});
+}
+
+class AddMultipleImageError extends HomeState {
+  final String errorMessage;
+
+  AddMultipleImageError({required this.errorMessage});
+  
+}
