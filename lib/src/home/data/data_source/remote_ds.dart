@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:house_rental_admin/src/home/data/models/house_model.dart';
-import 'package:house_rental_admin/src/home/domain/entities/house.dart';
 
 abstract class HomeRemoteDataSource {
   Future<DocumentReference<HouseDetailModel>?> addHouse(

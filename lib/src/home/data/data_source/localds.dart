@@ -35,7 +35,7 @@ class HomeLocalDatasourceImpl implements HomeLocalDatasource {
   Future<List<XFile>> addMultipleImage() async {
     final response = await ImagePicker().pickMultiImage();
 
-     List<XFile> file =[];
+    List<XFile> file =[];
     if (response.isNotEmpty) {
     file.addAll(response.map((e) => e)) ;
       return file;
@@ -45,5 +45,4 @@ class HomeLocalDatasourceImpl implements HomeLocalDatasource {
     }
   }
 
- 
 }

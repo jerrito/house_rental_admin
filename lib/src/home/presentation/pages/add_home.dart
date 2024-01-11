@@ -28,6 +28,8 @@ class _AddHomePageState extends State<AddHomePage> {
   final homeBloc = locator<HomeBloc>();
   final formKey = GlobalKey<FormBuilderState>();
   final homeNameController = TextEditingController();
+  final amountController = TextEditingController();
+  final descriptionController = TextEditingController();
   bool isImageAvailable = true;
   @override
   Widget build(BuildContext context) {
@@ -59,11 +61,14 @@ class _AddHomePageState extends State<AddHomePage> {
       body: BlocConsumer(
         listener: (BuildContext context, state) {
 
-          if(state is UpLoadImageLoaded){
+          if(state is UpLoadMultipleImageLoaded){
             Map<String, dynamic> params = {
-              ""
-              "phone_number":" widget.owner.phoneNumber",
-              "path": "profileURL",
+              "name": homeNameController.text,
+              "description": descriptionController.text,
+              "amount": amountController.text,
+              // "bed_room_count": bedRoomCount,
+              // "bath_room_count": bathRoomCount,
+              "images": state.imageURL[0],
             };
             homeBloc.add(AddHomeEvent(params: params));
           }
@@ -119,7 +124,7 @@ class _AddHomePageState extends State<AddHomePage> {
                     builder: (context) {
                       return DefaultTextfield(
                         textInputType: TextInputType.number,
-                        controller: homeNameController,
+                        controller: amountController,
                         hintText: "Enter rent amount",
                         label: "Rent amount",
                       );
@@ -137,7 +142,7 @@ class _AddHomePageState extends State<AddHomePage> {
                     },
                     builder: (context) {
                       return DefaultTextfield(
-                        controller: homeNameController,
+                        controller: descriptionController,
                         hintText: "Enter home description",
                         label: "Home Description",
                       );
