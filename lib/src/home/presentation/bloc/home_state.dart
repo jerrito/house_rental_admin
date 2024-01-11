@@ -35,5 +35,15 @@ class AddMultipleImageError extends HomeState {
   final String errorMessage;
 
   AddMultipleImageError({required this.errorMessage});
-  
+}
+
+class AddHomeLoaded extends HomeState {
+  AddHomeLoaded();
+}
+
+class AddHomeLoading extends HomeState{}
+
+class AddHomeError extends HomeState {
+  final String errorMessage;
+  AddHomeError({required this.errorMessage});
 }

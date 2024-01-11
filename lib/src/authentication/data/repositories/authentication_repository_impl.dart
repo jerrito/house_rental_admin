@@ -187,8 +187,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     }
   }
 
-
-
   @override
   Future<Either<String, String>> upLoadImage(
       Map<String, dynamic> params) async {
@@ -202,6 +200,17 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       }
     } else {
       return Left(networkInfo.noNetworkMessage);
+    }
+  }
+
+  @override
+  Future<Either<String, List<String>>> upLoadMultipleImages(
+      Map<String, dynamic> params) async {
+    try {
+      final response = await localDatasource.upLoadMultipleImages(params);
+      return Right(response);
+    } catch (e) {
+      return Left(e.toString());
     }
   }
 }

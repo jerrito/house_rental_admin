@@ -18,8 +18,10 @@ import 'package:house_rental_admin/src/authentication/domain/usecases/signup.dar
 import 'package:house_rental_admin/src/authentication/domain/usecases/verify_number.dart';
 import 'package:house_rental_admin/src/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:house_rental_admin/src/home/data/data_source/localds.dart';
+import 'package:house_rental_admin/src/home/data/data_source/remote_ds.dart';
 import 'package:house_rental_admin/src/home/data/repository/home_repository_impl.dart';
 import 'package:house_rental_admin/src/home/domain/repository/home_repository.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/add_house.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/add_multiple_image.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_camera.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_gallery.dart';
@@ -48,6 +50,7 @@ Future<void> initDependencies() async {
       addId: locator(),
       verifyPhoneNumberLogin: locator(),
       upLoadImage: locator(),
+      uploadMultipleImages: locator(),
     ),
   );
 
@@ -56,13 +59,25 @@ Future<void> initDependencies() async {
       getProfileCamera: locator(),
       getProfileGallery: locator(),
       addMultipleImage: locator(),
+      addHouse: locator(),
     ),
   );
 
   //usecases
 
   locator.registerLazySingleton(
+    () => AddHouse(
+      repository: locator(),
+    ),
+  );
+  locator.registerLazySingleton(
     () => GetProfileCamera(
+      repository: locator(),
+    ),
+  );
+
+  locator.registerLazySingleton(
+    () => AddMultipleImage(
       repository: locator(),
     ),
   );
@@ -148,10 +163,14 @@ Future<void> initDependencies() async {
     () => HomeRepositoryImpl(
       networkInfo: locator(),
       homeLocalDatasource: locator(),
+      homeRemoteDataSource: locator(),
     ),
   );
   //remoteds
 
+  locator.registerLazySingleton<HomeRemoteDataSource>(
+    () => HomeRemoteDataSourceImpl(),
+  );
   locator.registerLazySingleton<NetworkInfo>(
     () => NetworkInfoImpl(
       dataConnectionChecker: locator(),

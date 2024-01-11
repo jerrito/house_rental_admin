@@ -27,3 +27,8 @@ class AddMultipleImageEvent extends HomeEvent {
 
   AddMultipleImageEvent({required this.params});
 }
+
+class AddHomeEvent extends HomeEvent {
+  final Map<String, dynamic> params;
+  AddHomeEvent({required this.params});
+}

@@ -12,6 +12,7 @@ import 'package:house_rental_admin/src/authentication/domain/usecases/phone_numb
 import 'package:house_rental_admin/src/authentication/domain/usecases/signup.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/up_load_image.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/update_user.dart';
+import 'package:house_rental_admin/src/authentication/domain/usecases/upload_multiple_images.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/verify_otp.dart';
 
 import 'package:house_rental_admin/src/authentication/domain/usecases/verify_number.dart';
@@ -32,19 +33,21 @@ class AuthenticationBloc
   final FirebaseService firebaseService;
   final AddId addId;
   final UpLoadImage upLoadImage;
-  AuthenticationBloc(
-      {required this.verifyPhoneNumberLogin,
-      required this.signup,
-      required this.firebaseAuth,
-      required this.verifyNumber,
-      required this.verifyOTP,
-      required this.getCacheData,
-      required this.signin,
-      required this.firebaseService,
-      required this.updateUser,
-      required this.addId,
-      required this.upLoadImage,})
-      : super(AuthenticationInitial()) {
+  final UploadMultipleImages uploadMultipleImages;
+  AuthenticationBloc({
+    required this.verifyPhoneNumberLogin,
+    required this.signup,
+    required this.firebaseAuth,
+    required this.verifyNumber,
+    required this.verifyOTP,
+    required this.getCacheData,
+    required this.signin,
+    required this.firebaseService,
+    required this.updateUser,
+    required this.addId,
+    required this.upLoadImage,
+    required this.uploadMultipleImages,
+  }) : super(AuthenticationInitial()) {
     on<SignupEvent>((event, emit) async {
       emit(SignupLoading());
 
@@ -192,7 +195,7 @@ class AuthenticationBloc
       );
     });
 
-     //!UPLOAD IMAGE TO CLOUD STORE
+    //!UPLOAD IMAGE TO CLOUD STORE
     on<UpLoadImageEvent>((event, emit) async {
       emit(UpLoadImageLoading());
 
@@ -200,6 +203,16 @@ class AuthenticationBloc
 
       emit(response.fold((error) => UpLoadImageError(errorMessage: error),
           (response) => UpLoadImageLoaded(imageURL: response)));
+    });
+     
+     //!UPLOAD MULTIPLE IMAGES TO CLOUD
+    on<UpLoadMultipleImageEvent>((event, emit) async {
+      final response = await uploadMultipleImages.call(event.params);
+
+      emit(
+        response.fold((error) => UpLoadImageError(errorMessage: error),
+            (response) => UpLoadMultipleImageLoaded(imageURL: response)),
+      );
     });
   }
 }

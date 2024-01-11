@@ -10,6 +10,7 @@ abstract class AuthenticationLocalDatasource {
   Future cacheUserData(Owner user);
   Future<OwnerModel> getUserCachedData();
   Future<String> upLoadImage(Map<String, dynamic> params);
+  Future<List<String>> upLoadMultipleImages(Map<String, dynamic> params);
 }
 
 class AuhenticationLocalDataSourceImpl
@@ -48,6 +49,27 @@ class AuhenticationLocalDataSourceImpl
     String? returnURL;
     await upLoadTask.whenComplete(
       () => upLoadPath.getDownloadURL().then((value) => returnURL = value),
+    );
+
+    return returnURL!;
+  }
+
+  @override
+  Future<List<String>> upLoadMultipleImages(Map<String, dynamic> params) async {
+    //Upload file
+    final upLoadPath = FirebaseStorage.instance.ref().child(
+          params["phone_number"],
+        );
+
+    final upLoadTask = upLoadPath.putFile(
+      File(params["path"]),
+    );
+
+    List<String>? returnURL;
+    await upLoadTask.whenComplete(
+      () => upLoadPath.getDownloadURL().then(
+            (value) => returnURL!.add(value)
+          ),
     );
 
     return returnURL!;

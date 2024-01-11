@@ -100,3 +100,8 @@ class UpLoadImageEvent extends AuthenticationEvent {
   final Map<String, dynamic> params;
   const UpLoadImageEvent({required this.params});
 }
+
+class UpLoadMultipleImageEvent extends AuthenticationEvent {
+  final Map<String, dynamic> params;
+  const UpLoadMultipleImageEvent({required this.params});
+}

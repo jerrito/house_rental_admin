@@ -33,5 +33,6 @@ abstract class AuthenticationRepository {
   Future<Either<String, void>> addId(Map<String, dynamic> params);
 
   Future<Either<String, String>> upLoadImage(Map<String, dynamic> params);
+  Future<Either<String, List<String>>> upLoadMultipleImages(Map<String, dynamic> params);
 
 }
