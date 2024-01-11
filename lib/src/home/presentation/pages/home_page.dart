@@ -48,6 +48,7 @@ class _HomePageState extends State<HomePage> {
           },
         builder: (context,state) {
           return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
             Text(owner?.firstName ?? "d"),
           

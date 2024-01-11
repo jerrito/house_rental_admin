@@ -15,7 +15,10 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
 
       bottomNavigationBar:  BottomNavigationBarWidget(index: 3,),
-      body: Container(),
+      body: Center(
+        child: Text("Profile"),
+      ),
+
     );
   }
 }

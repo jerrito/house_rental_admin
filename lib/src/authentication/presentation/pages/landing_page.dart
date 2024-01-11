@@ -19,7 +19,7 @@ class LandingPage extends StatelessWidget {
         DefaultButton(
           label: "Signup",
           onTap: () {
-            Navigator.pushReplacement(
+            Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (BuildContext context) => const PhoneNumberPage(

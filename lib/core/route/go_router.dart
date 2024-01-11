@@ -7,7 +7,10 @@ import 'package:house_rental_admin/src/authentication/presentation/pages/phone_n
 import 'package:house_rental_admin/src/authentication/presentation/pages/signin_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/signup_page.dart';
 import 'package:house_rental_admin/src/errors/presentation/pages/no_internet_page.dart';
+import 'package:house_rental_admin/src/home/presentation/pages/add_home.dart';
+import 'package:house_rental_admin/src/home/presentation/pages/edit_home.dart';
 import 'package:house_rental_admin/src/home/presentation/pages/home_page.dart';
+import 'package:house_rental_admin/src/home/presentation/pages/profile.dart';
 
 GoRouter goRouter() {
   return GoRouter(initialLocation: "/", routes: [
@@ -65,10 +68,9 @@ GoRouter goRouter() {
         ),
 
         GoRoute(
-          path:"landing",
-          name:"landing",
-          builder:(context,state)=>
-         const LandingPage(),
+          path: "landing",
+          name: "landing",
+          builder: (context, state) => const LandingPage(),
         ),
         // GoRoute(
         //   path: "document",
@@ -81,7 +83,32 @@ GoRouter goRouter() {
           path: "home",
           name: "homePage",
           builder: (context, state) => const HomePage(),
-          routes: const [],
+          routes: [
+            GoRoute(
+              path: "addHome",
+              name: "addHome",
+              builder: (context, state) {
+              return const  AddHomePage();
+              },
+            ),
+
+             GoRoute(
+              path: "editHome",
+              name: "editHome",
+              builder: (context, state) {
+              return const  EditHomePage();
+              },
+            ),
+
+             GoRoute(
+              path: "profile",
+              name: "profile",
+              builder: (context, state) {
+              return const  ProfilePage();
+              },
+            ),
+
+          ],
         ),
       ],
     ),

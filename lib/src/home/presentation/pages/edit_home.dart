@@ -15,7 +15,11 @@ class _EditHomePageState extends State<EditHomePage> {
     return Scaffold(
 
       bottomNavigationBar:  BottomNavigationBarWidget(index: 2,),
-      body: Container(),
+      body:  Container(
+        child:Center(
+          child:Text("Edit Page")
+        )
+      ),
     );
   }
 }
