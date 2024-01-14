@@ -19,8 +19,12 @@ import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class AddHomePage extends StatefulWidget {
-  final String id;
-  const AddHomePage({super.key, required this.id});
+  final String id, phoneNumber;
+  const AddHomePage({
+    super.key,
+    required this.id,
+    required this.phoneNumber,
+  });
 
   @override
   State<AddHomePage> createState() => _AddHomePageState();
@@ -56,6 +60,10 @@ class _AddHomePageState extends State<AddHomePage> {
             };
             homeBloc.add(AddHomeEvent(params: params));
           }
+
+          if (state is UpLoadMultipleImageError) {
+            debugPrint(state.errorMessage);
+          }
         },
         builder: (context, state) {
           if (state is UpLoadMultipleImageLoading) {
@@ -66,7 +74,11 @@ class _AddHomePageState extends State<AddHomePage> {
             label: "Add Home",
             onPressed: () {
               if (formKey.currentState!.saveAndValidate() == true) {
-                Map<String, dynamic> params = {};
+                Map<String, dynamic> params = {
+                  "phone_number": widget.phoneNumber,
+                  "path": images,
+                  "images": images.length
+                };
                 authBloc.add(UpLoadMultipleImageEvent(params: params));
                 print(images);
 
@@ -248,70 +260,90 @@ class _AddHomePageState extends State<AddHomePage> {
                     ),
                   ),
                   Space().height(context, 0.02),
-                  BlocConsumer(
-                    bloc: homeBloc,
-                    builder: (context, state) {
-                      if (state is AddMultipleImageLoaded) {
-                        for (int i = 0; i < state.files.length; i++) {
-                          images.add(state.files[i].path!);
+                  FormBuilderField<List<String>>(
+                      name: "house_images",
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return fieldRequired;
                         }
 
-                        print(images);
-                        return SizedBox(
-                          width: double.infinity,
-                          height: 150,
-                          child: CarouselSlider.builder(
-                            itemCount: state.files.length,
-                            itemBuilder: (context, index, value) {
-                              final paths = state.files[index].path;
+                        return null;
+                      },
+                      builder: (field) {
+                        return InputDecorator(
+                          decoration:
+                              InputDecoration(errorText: field.errorText),
+                          child: BlocConsumer(
+                            bloc: homeBloc,
+                            builder: (context, state) {
+                              if (state is AddMultipleImageLoaded) {
+                                return SizedBox(
+                                  width: double.infinity,
+                                  height: 150,
+                                  child: CarouselSlider.builder(
+                                    itemCount: state.files.length,
+                                    itemBuilder: (context, index, value) {
+                                      final paths = state.files[index].path;
 
-                              return Container(
+                                      return Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal:
+                                                Sizes().width(context, 0.04)),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          child: Image.file(
+                                            File(paths ?? ""),
+                                            fit: BoxFit.cover,
+                                            width: double.infinity,
+                                            height: 150,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    options: CarouselOptions(
+                                      height: 150,
+                                      reverse: true,
+                                    ),
+                                  ),
+                                );
+                              }
+                              return Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: Sizes().width(context, 0.04)),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5),
-                                  child: Image.file(
-                                    File(paths ?? ""),
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
+                                child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            Sizes().width(context, 0.08)),
+                                    width: 180,
                                     height: 150,
-                                  ),
-                                ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: searchTextColor3,
+                                    ),
+                                    child: GestureDetector(
+                                        onTap: () {
+                                          homeBloc.add(AddMultipleImageEvent(
+                                              params: NoParams()));
+                                        },
+                                        child: SvgPicture.asset(cameraSVG))),
                               );
                             },
-                            options: CarouselOptions(
-                              height: 150,
-                              reverse: true,
-                            ),
+                            listener: (BuildContext context, state) {
+                              if (state is AddMultipleImageError) {
+                                debugPrint(state.errorMessage);
+                              }
+                              if (state is AddMultipleImageLoaded) {
+                                for (int i = 0; i < state.files.length; i++) {
+                                  images.add(state.files[i].path!);
+                                }
+                                field.didChange(images);
+                                print(images);
+                              }
+                            },
                           ),
                         );
-                      }
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: Sizes().width(context, 0.04)),
-                        child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: Sizes().width(context, 0.08)),
-                            width: 180,
-                            height: 150,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: searchTextColor3,
-                            ),
-                            child: GestureDetector(
-                                onTap: () {
-                                  homeBloc.add(AddMultipleImageEvent(
-                                      params: NoParams()));
-                                },
-                                child: SvgPicture.asset(cameraSVG))),
-                      );
-                    },
-                    listener: (BuildContext context, state) {
-                      if (state is AddMultipleImageError) {
-                        debugPrint(state.errorMessage);
-                      }
-                    },
-                  ),
+                      }),
                   FormBuilderField<String>(
                       name: "homeDescription",
                       validator: (value) {

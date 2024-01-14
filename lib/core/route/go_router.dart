@@ -89,6 +89,7 @@ GoRouter goRouter() {
               builder: (context, state) {
               return   AddHomePage(
                 id:state.uri.queryParameters["id"].toString(),
+                phoneNumber: state.uri.queryParameters["phoneNumber"].toString(),
               );
               },
             ),

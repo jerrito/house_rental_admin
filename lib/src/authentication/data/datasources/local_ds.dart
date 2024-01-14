@@ -59,19 +59,22 @@ class AuhenticationLocalDataSourceImpl
     //Upload file
     final upLoadPath = FirebaseStorage.instance.ref().child(
           params["phone_number"],
-        );
+        ).child("houses");
+    List<String> returnURL=[];
 
-    final upLoadTask = upLoadPath.putFile(
-      File(params["path"]),
-    );
+    for (int i = 0; i < params["images"]; i++) {
+      final upLoadTask = upLoadPath.putFile(
+        File(params["path"][i]),
+      );
 
-    List<String>? returnURL;
-    await upLoadTask.whenComplete(
-      () => upLoadPath.getDownloadURL().then(
-            (value) => returnURL!.add(value)
-          ),
-    );
+      await upLoadTask.whenComplete(
+        () =>
+            upLoadPath.getDownloadURL().then((value) => returnURL.add(value)),
+      );
+    }
 
-    return returnURL!;
+    print(returnURL);
+
+    return returnURL;
   }
 }
