@@ -26,9 +26,13 @@ class HouseDocumentError extends HomeState {
 }
 
 class AddMultipleImageLoaded extends HomeState {
-  final List<XFile> files;
+  final List<PlatformFile> files;
 
   AddMultipleImageLoaded({required this.files});
+}
+
+class AddMultipleImageLoading extends HomeState{
+  
 }
 
 class AddMultipleImageError extends HomeState {

@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crypto/crypto.dart';
 import 'package:house_rental_admin/core/size/sizes.dart';
 import 'package:house_rental_admin/core/spacing/whitspacing.dart';
@@ -14,7 +13,6 @@ import 'package:house_rental_admin/src/authentication/presentation/bloc/authenti
 import 'package:house_rental_admin/src/authentication/presentation/pages/document_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/widgets/default_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:house_rental_admin/src/home/presentation/pages/home_page.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:string_validator/string_validator.dart';
 

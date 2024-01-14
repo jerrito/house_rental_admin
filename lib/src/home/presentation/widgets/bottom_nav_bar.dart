@@ -25,7 +25,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
           widget.index = value;
         
           setState(() {});
-          context.goNamed("home");
+          context.goNamed("homePage");
         }
         if (value == 1) {
           widget.index = value;

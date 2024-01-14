@@ -1,6 +1,5 @@
 import 'package:go_router/go_router.dart';
 import 'package:house_rental_admin/connection_page.dart';
-import 'package:house_rental_admin/src/authentication/presentation/pages/document_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/landing_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/otp_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/phone_number_page.dart';
@@ -88,7 +87,9 @@ GoRouter goRouter() {
               path: "addHome",
               name: "addHome",
               builder: (context, state) {
-              return const  AddHomePage();
+              return   AddHomePage(
+                id:state.uri.queryParameters["id"].toString(),
+              );
               },
             ),
 

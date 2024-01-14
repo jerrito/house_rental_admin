@@ -43,6 +43,8 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
   final townOrCityController = TextEditingController();
   final roleController = TextEditingController();
   final houseDocumentController = TextEditingController();
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -223,6 +225,9 @@ class _DocumentSubmissionPageState extends State<DocumentSubmissionPage> {
                                 return mustBeCharacters;
                               }
                               return null;
+                            },
+                            onChanged: (value){
+                              
                             },
                             builder: (context) {
                               return DefaultTextfield(

@@ -50,7 +50,6 @@ Future<void> initDependencies() async {
       addId: locator(),
       verifyPhoneNumberLogin: locator(),
       upLoadImage: locator(),
-      uploadMultipleImages: locator(),
     ),
   );
 
@@ -83,12 +82,6 @@ Future<void> initDependencies() async {
   );
 
   locator.registerLazySingleton(
-    () => AddMultipleImage(
-      repository: locator(),
-    ),
-  );
-
-  locator.registerLazySingleton(
     () => GetProfileGallery(
       repository: locator(),
     ),
@@ -98,6 +91,10 @@ Future<void> initDependencies() async {
     () => UpLoadImage(
       repository: locator(),
     ),
+  );
+
+  locator.registerLazySingleton(
+    () => FirebaseAuth.instance,
   );
 
   locator.registerLazySingleton(
@@ -116,10 +113,6 @@ Future<void> initDependencies() async {
     () => Signin(
       repository: locator(),
     ),
-  );
-
-  locator.registerLazySingleton(
-    () => FirebaseAuth.instance,
   );
 
   locator.registerLazySingleton(
@@ -146,7 +139,11 @@ Future<void> initDependencies() async {
     ),
   );
 
-  locator.registerLazySingleton(() => UpdateUser(repository: locator()));
+  locator.registerLazySingleton(
+    () => UpdateUser(
+      repository: locator(),
+    ),
+  );
 
   //repository
 
@@ -168,6 +165,13 @@ Future<void> initDependencies() async {
   );
   //remoteds
 
+  locator.registerLazySingleton(
+    () => FirebaseService(
+      firebaseFirestore: locator(),
+      firebaseAuth: locator(),
+    ),
+  );
+  
   locator.registerLazySingleton<HomeRemoteDataSource>(
     () => HomeRemoteDataSourceImpl(),
   );
@@ -203,12 +207,7 @@ Future<void> initDependencies() async {
     () => DataConnectionChecker(),
   );
 
-  locator.registerLazySingleton(
-    () => FirebaseService(
-      firebaseFirestore: locator(),
-      firebaseAuth: locator(),
-    ),
-  );
+  
 
   locator.registerLazySingleton(
     () => FirebaseFirestore.instance,

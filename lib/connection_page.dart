@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:house_rental_admin/locator.dart';
 import 'package:house_rental_admin/src/authentication/presentation/bloc/authentication_bloc.dart';
-import 'package:house_rental_admin/src/authentication/presentation/pages/phone_number_page.dart';
 
 class ConnectionPage extends StatefulWidget {
   const ConnectionPage({super.key});

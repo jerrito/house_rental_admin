@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:house_rental_admin/core/network_info.dart/network_info.dart';
 import 'package:house_rental_admin/src/home/data/data_source/localds.dart';
 import 'package:house_rental_admin/src/home/data/data_source/remote_ds.dart';
@@ -40,7 +41,7 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
-  Future<Either<String, List<XFile>>> addMultipleImage() async {
+  Future<Either<String, List<PlatformFile>>> addMultipleImage() async {
     try {
       final response = await homeLocalDatasource.addMultipleImage();
       return Right(response);
@@ -50,7 +51,7 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
-  Future<Either<String, DocumentReference<HouseDetailModel>?>> addHouse(
+  Future<Either<String, DocumentReference<Map<String, dynamic>>?>> addHouse(
       Map<String, dynamic> params) async {
     if (await networkInfo.isConnected) {
       try {

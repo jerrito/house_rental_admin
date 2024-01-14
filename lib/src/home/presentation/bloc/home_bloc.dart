@@ -1,12 +1,10 @@
-import 'dart:io';
-
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_rental_admin/core/usecase/usecase.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/add_house.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/add_multiple_image.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_camera.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_gallery.dart';
-import 'package:house_rental_admin/src/authentication/domain/usecases/up_load_image.dart';
 import 'package:image_picker/image_picker.dart';
 part 'home_event.dart';
 part 'home_state.dart';
@@ -79,8 +77,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final response = await addHouse.call(event.params);
 
       emit(
-        response.fold((error) => AddHomeError(errorMessage: error),
-            (response) => AddHomeLoaded(),),
+        response.fold(
+          (error) => AddHomeError(errorMessage: error),
+          (response) => AddHomeLoaded(),
+        ),
       );
     });
   }

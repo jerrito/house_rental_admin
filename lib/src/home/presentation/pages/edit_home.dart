@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:house_rental_admin/src/home/presentation/widgets/bottom_nav_bar.dart';
 
@@ -16,7 +15,7 @@ class _EditHomePageState extends State<EditHomePage> {
 
       bottomNavigationBar:  BottomNavigationBarWidget(index: 2,),
       body:  Container(
-        child:Center(
+        child:const Center(
           child:Text("Edit Page")
         )
       ),

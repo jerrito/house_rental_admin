@@ -139,7 +139,7 @@ class _PhoneNumberPageState extends State<PhoneNumberPage> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Enter Phone Number"),
+                        const Text("Enter Phone Number"),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:house_rental_admin/src/home/presentation/widgets/bottom_nav_bar.dart';
 
@@ -15,7 +14,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
 
       bottomNavigationBar:  BottomNavigationBarWidget(index: 3,),
-      body: Center(
+      body: const Center(
         child: Text("Profile"),
       ),
 
