@@ -30,7 +30,7 @@ class EditHomePage extends StatefulWidget {
   State<EditHomePage> createState() => _EditHomePageState();
 }
 
-class _AddHomePageState extends State<AddHomePage> {
+class _EditHomePageState extends State<EditHomePage> {
   final homeBloc = locator<HomeBloc>();
   final authBloc = locator<AuthenticationBloc>();
   final formKey = GlobalKey<FormBuilderState>();
