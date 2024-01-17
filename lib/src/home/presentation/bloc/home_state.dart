@@ -51,3 +51,15 @@ class AddHomeError extends HomeState {
   final String errorMessage;
   AddHomeError({required this.errorMessage});
 }
+
+class GetAllHousesLoaded extends HomeState{
+  final QuerySnapshot<HouseDetail> houses;
+  GetAllHousesLoaded({required this.houses});
+
+}
+class GetAllHousesLoading extends HomeState{}
+class GetAllHouseError extends HomeState{
+  final String errorMessage;
+   GetAllHouseError({required this.errorMessage});
+}
+

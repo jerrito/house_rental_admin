@@ -4,6 +4,7 @@ import 'package:house_rental_admin/locator.dart';
 import 'package:house_rental_admin/src/authentication/domain/entities/owner.dart';
 import 'package:house_rental_admin/src/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 import 'package:house_rental_admin/src/home/presentation/pages/add_home.dart';
 import '../widgets/bottom_nav_bar.dart';
 
@@ -24,6 +25,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final authBloc = locator<AuthenticationBloc>();
+  final homeBloc = locator<HomeBloc>();
   final searchController = TextEditingController();
   Owner? owner;
 
@@ -48,8 +50,9 @@ class _HomePageState extends State<HomePage> {
                   print(owner?.phoneNumber);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (BuildContext context) {
-                    return AddHomePage(id: owner?.id ?? "",
-                    phoneNumber:owner?.phoneNumber ?? "");
+                    return AddHomePage(
+                        id: owner?.id ?? "",
+                        phoneNumber: owner?.phoneNumber ?? "");
                   }));
                   context.goNamed("addHome");
                 },
@@ -66,6 +69,8 @@ class _HomePageState extends State<HomePage> {
                 owner = state.owner;
                 debugPrint(owner?.toMap().toString());
                 setState(() {});
+                Map<String, dynamic> params = {};
+                homeBloc.add(GetAllHousesEvent(params: params));
               }
             },
             builder: (context, state) {

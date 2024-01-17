@@ -24,6 +24,7 @@ import 'package:house_rental_admin/src/home/data/repository/home_repository_impl
 import 'package:house_rental_admin/src/home/domain/repository/home_repository.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/add_house.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/add_multiple_image.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/get_all_houses.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_camera.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_gallery.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/up_load_image.dart';
@@ -57,14 +58,16 @@ Future<void> initDependencies() async {
 
   locator.registerFactory(
     () => HomeBloc(
-      getProfileCamera: locator(),
-      getProfileGallery: locator(),
-      addMultipleImage: locator(),
-      addHouse: locator(),
-    ),
+        getProfileCamera: locator(),
+        getProfileGallery: locator(),
+        addMultipleImage: locator(),
+        addHouse: locator(),
+        getAllHouses: locator()),
   );
 
   //usecases
+
+  locator.registerLazySingleton(() => GetAllHouses(repository: locator()));
   locator.registerLazySingleton(
     () => UploadMultipleImages(
       repository: locator(),
@@ -177,7 +180,7 @@ Future<void> initDependencies() async {
       firebaseAuth: locator(),
     ),
   );
-  
+
   locator.registerLazySingleton<HomeRemoteDataSource>(
     () => HomeRemoteDataSourceImpl(),
   );
@@ -212,8 +215,6 @@ Future<void> initDependencies() async {
   locator.registerLazySingleton(
     () => DataConnectionChecker(),
   );
-
-  
 
   locator.registerLazySingleton(
     () => FirebaseFirestore.instance,

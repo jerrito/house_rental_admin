@@ -98,7 +98,11 @@ GoRouter goRouter() {
               path: "editHome",
               name: "editHome",
               builder: (context, state) {
-              return const  EditHomePage();
+              return   EditHomePage(
+                id:state.uri.queryParameters["id"].toString(),
+                phoneNumber: state.uri.queryParameters["phone_number"].toString(),
+
+              );
               },
             ),
 

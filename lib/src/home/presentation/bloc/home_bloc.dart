@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_rental_admin/core/usecase/usecase.dart';
+import 'package:house_rental_admin/src/home/data/models/house_model.dart';
+import 'package:house_rental_admin/src/home/domain/entities/house.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/add_house.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/add_multiple_image.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/get_all_houses.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_camera.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_gallery.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,8 +17,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetProfileCamera getProfileCamera;
   final GetProfileGallery getProfileGallery;
   final AddMultipleImage addMultipleImage;
+  final GetAllHouses getAllHouses;
   final AddHouse addHouse;
   HomeBloc({
+    required this.getAllHouses,
     required this.addMultipleImage,
     required this.getProfileCamera,
     required this.getProfileGallery,
@@ -82,6 +88,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           (response) => AddHomeLoaded(),
         ),
       );
+    });
+
+    //!GET ALL HOUSES
+    on<GetAllHousesEvent>((event, emit) async {
+      emit(GetAllHousesLoading());
+      final response = await getAllHouses.call(event.params);
+
+      emit(response.fold((error) =>  GetAllHouseError(errorMessage: error),
+          (response) => GetAllHousesLoaded(
+            houses: response
+          )));
     });
   }
 }
