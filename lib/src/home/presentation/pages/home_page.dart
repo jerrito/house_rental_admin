@@ -40,46 +40,67 @@ class _HomePageState extends State<HomePage> {
     //debugPrint(user?.id);
 
     return Scaffold(
-        appBar: AppBar(
-          leading: const SizedBox(),
-          title: const Text("My House/Rooms"),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  print(owner?.id);
-                  print(owner?.phoneNumber);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (BuildContext context) {
-                    return AddHomePage(
-                        id: owner?.id ?? "",
-                        phoneNumber: owner?.phoneNumber ?? "");
-                  }));
-                  context.goNamed("addHome");
-                },
-                icon: const Icon(Icons.add))
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBarWidget(
-          index: 0,
-        ),
-        body: BlocConsumer(
-            bloc: authBloc,
-            listener: (context, state) {
-              if (state is GetCacheDataLoaded) {
-                owner = state.owner;
-                debugPrint(owner?.toMap().toString());
-                setState(() {});
-                Map<String, dynamic> params = {};
-                homeBloc.add(GetAllHousesEvent(params: params));
-              }
-            },
-            builder: (context, state) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(owner?.firstName ?? "d"),
-                ],
+      appBar: AppBar(
+        leading: const SizedBox(),
+        title: const Text("My House/Rooms"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                print(owner?.id);
+                print(owner?.phoneNumber);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (BuildContext context) {
+                  return AddHomePage(
+                      id: owner?.id ?? "",
+                      phoneNumber: owner?.phoneNumber ?? "");
+                }));
+                context.goNamed("addHome");
+              },
+              icon: const Icon(Icons.add))
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBarWidget(
+        index: 0,
+      ),
+      body: BlocConsumer(
+          bloc: authBloc,
+          listener: (context, state) {
+            if (state is GetCacheDataLoaded) {
+              owner = state.owner;
+              debugPrint(owner?.toMap().toString());
+              setState(() {});
+              Map<String, dynamic> params = {};
+              homeBloc.add(GetAllHousesEvent(params: params));
+            }
+
+            if (state is GetAllHousesLoaded) {}
+
+            if (state is GetAllHouseError) {}
+          },
+          builder: (context, state) {
+            if (state is GetAllHousesLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
               );
-            }));
+            }
+            if (state is GetAllHousesLoaded) {
+              return ListView.builder(
+                  itemCount: state.houses.docs.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+
+                        Container(
+
+                        ),
+                        Text(owner?.firstName ?? "d"),
+                      ],
+                    );
+                  });
+            }
+            return const SizedBox();
+          }),
+    );
   }
 }

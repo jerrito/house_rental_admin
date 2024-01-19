@@ -15,15 +15,16 @@ import 'package:house_rental_admin/core/widgets/bottom_sheet.dart';
 import 'package:house_rental_admin/locator.dart';
 import 'package:house_rental_admin/src/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:house_rental_admin/src/authentication/presentation/widgets/default_textfield.dart';
+import 'package:house_rental_admin/src/home/domain/entities/house.dart';
 import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class EditHomePage extends StatefulWidget {
-  final String id, phoneNumber;
+  final HouseDetail house;
   const EditHomePage({
     super.key,
-    required this.id,
-    required this.phoneNumber,
+    
+    required this.house,
   });
 
   @override
@@ -56,7 +57,7 @@ class _EditHomePageState extends State<EditHomePage> {
               "bed_room_count": bedRoomController.text,
               "bath_room_count": bathRoomController.text,
               "images": state.imageURL,
-              "id": widget.id
+              "id": widget.house.amount
             };
             homeBloc.add(AddHomeEvent(params: params));
           }
@@ -75,7 +76,7 @@ class _EditHomePageState extends State<EditHomePage> {
             onPressed: () {
               if (formKey.currentState!.saveAndValidate() == true) {
                 Map<String, dynamic> params = {
-                  "phone_number": widget.phoneNumber,
+                  "phone_number": widget.house.houseName,
                   "path": images,
                   "images": images.length
                 };
