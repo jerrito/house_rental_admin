@@ -18,7 +18,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:Text("Profile")
+        title:const Text("Profile")
       ),
       bottomNavigationBar: BottomNavigationBarWidget(
         index: 3,

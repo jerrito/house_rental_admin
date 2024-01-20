@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:equatable/equatable.dart';
 
 class Owner extends Equatable {
@@ -54,7 +56,7 @@ class Owner extends Equatable {
         "profile_URL":profileURL,
         "email":email,
         "password":password,
-        "house_GPS_adddress":houseGPSAddress,
+        "house_GPS_address":houseGPSAddress,
         "town_or_city":townORCity,
         "role":role,
         "house_document":houseDocument,

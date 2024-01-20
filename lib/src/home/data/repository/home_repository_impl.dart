@@ -52,7 +52,7 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
-  Future<Either<String, DocumentReference<Map<String, dynamic>>?>> addHouse(
+  Future<Either<String, DocumentReference<HouseDetailModel>?>> addHouse(
       Map<String, dynamic> params) async {
     if (await networkInfo.isConnected) {
       try {

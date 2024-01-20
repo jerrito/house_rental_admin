@@ -215,7 +215,7 @@ class AuthenticationBloc
 
       emit(
         response.fold(
-          (error) => UpLoadImageError(errorMessage: error),
+          (error) => UpLoadMultipleImageError(errorMessage: error),
           (response) => UpLoadMultipleImageLoaded(
             imageURL: response,
           ),

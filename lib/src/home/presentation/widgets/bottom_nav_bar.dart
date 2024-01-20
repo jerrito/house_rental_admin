@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:house_rental_admin/assets/svgs/svg_constants.dart';
@@ -20,7 +22,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
       currentIndex: widget.index,
       type: BottomNavigationBarType.fixed,
       onTap: (value) {
-        print(value);
+      
         if (value == 0) {
           widget.index = value;
         

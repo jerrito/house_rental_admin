@@ -40,7 +40,7 @@ class _AddHomePageState extends State<AddHomePage> {
   final bedRoomController = TextEditingController();
   final descriptionController = TextEditingController();
   bool isImageAvailable = true;
-  List<String> images = [];
+  List<String>? images = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,20 +48,26 @@ class _AddHomePageState extends State<AddHomePage> {
         bloc: authBloc,
         listener: (context, state) {
           if (state is UpLoadMultipleImageLoaded) {
-            print(state.imageURL);
             Map<String, dynamic> params = {
-              "name": homeNameController.text,
+              "house_name": homeNameController.text,
               "description": descriptionController.text,
-              "amount": amountController.text,
-              "bed_room_count": bedRoomController.text,
-              "bath_room_count": bathRoomController.text,
+              "amount": num.parse(amountController.text),
+              "bed_room_count": num.parse(bedRoomController.text),
+              "bath_room_count": num.parse(bathRoomController.text),
               "images": state.imageURL,
               "id": widget.id
             };
-            homeBloc.add(AddHomeEvent(params: params));
+            homeBloc.add(
+              AddHomeEvent(params: params),
+            );
           }
 
           if (state is UpLoadMultipleImageError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage),
+              ),
+            );
             debugPrint(state.errorMessage);
           }
         },
@@ -77,10 +83,9 @@ class _AddHomePageState extends State<AddHomePage> {
                 Map<String, dynamic> params = {
                   "phone_number": widget.phoneNumber,
                   "path": images,
-                  "images": images.length
+                  "images": images?.length
                 };
                 authBloc.add(UpLoadMultipleImageEvent(params: params));
-                print(images);
 
                 // Map<String, dynamic> params = {
                 //   "phone_number": widget.owner.phoneNumber,
@@ -94,7 +99,7 @@ class _AddHomePageState extends State<AddHomePage> {
       ),
       // bottomNavigationBar: BottomNavigationBarWidget(
       //   index: 1,
-      // ),
+      // ),UpLoadImageError
       appBar: AppBar(
         title: const Text("Add Home or Room"),
       ),
@@ -102,20 +107,29 @@ class _AddHomePageState extends State<AddHomePage> {
         key: formKey,
         child: SingleChildScrollView(
           child: BlocConsumer(
+            bloc: homeBloc,
             listener: (BuildContext context, state) {
               if (state is AddHomeLoaded) {
                 context.goNamed("homePage");
               }
 
               if (state is AddHomeError) {
-                print(state.errorMessage);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      state.errorMessage,
+                    ),
+                  ),
+                );
+                debugPrint(state.errorMessage);
               }
             },
-            bloc: homeBloc,
             builder: (context, state) {
-              // if (state is AddHomeLoading) {
-              //   return const Center(child: CircularProgressIndicator());
-              // }
+              if (state is AddHomeLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
               // if(state is ){
 
               // }
@@ -248,8 +262,11 @@ class _AddHomePageState extends State<AddHomePage> {
                         Space().width(context, 0.03),
                         GestureDetector(
                           onTap: () {
-                            homeBloc
-                                .add(AddMultipleImageEvent(params: NoParams()));
+                            homeBloc.add(
+                              AddMultipleImageEvent(
+                                params: NoParams(),
+                              ),
+                            );
                           },
                           child: SvgPicture.asset(
                             editSVG,
@@ -331,14 +348,20 @@ class _AddHomePageState extends State<AddHomePage> {
                             },
                             listener: (BuildContext context, state) {
                               if (state is AddMultipleImageError) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      state.errorMessage,
+                                    ),
+                                  ),
+                                );
                                 debugPrint(state.errorMessage);
                               }
                               if (state is AddMultipleImageLoaded) {
                                 for (int i = 0; i < state.files.length; i++) {
-                                  images.add(state.files[i].path!);
+                                  images?.add(state.files[i].path!);
                                 }
                                 field.didChange(images);
-                                print(images);
                               }
                             },
                           ),

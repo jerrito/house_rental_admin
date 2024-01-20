@@ -38,8 +38,7 @@ class HomeLocalDatasourceImpl implements HomeLocalDatasource {
     List<PlatformFile> file = [];
     if (response!.files.isNotEmpty) {
       file.addAll(response.files.map((e) => e));
-      print(file.length);
-      print(file);
+      
       return file;
     } else {
       throw Exception("Error getting images");

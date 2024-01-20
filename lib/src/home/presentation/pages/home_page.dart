@@ -46,8 +46,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: () {
-                print(owner?.id);
-                print(owner?.phoneNumber);
+               
                 Navigator.push(context,
                     MaterialPageRoute(builder: (BuildContext context) {
                   return AddHomePage(

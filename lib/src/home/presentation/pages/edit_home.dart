@@ -49,7 +49,6 @@ class _EditHomePageState extends State<EditHomePage> {
         bloc: authBloc,
         listener: (context, state) {
           if (state is UpLoadMultipleImageLoaded) {
-            print(state.imageURL);
             Map<String, dynamic> params = {
               "name": homeNameController.text,
               "description": descriptionController.text,
@@ -81,7 +80,6 @@ class _EditHomePageState extends State<EditHomePage> {
                   "images": images.length
                 };
                 authBloc.add(UpLoadMultipleImageEvent(params: params));
-                print(images);
 
                 // Map<String, dynamic> params = {
                 //   "phone_number": widget.owner.phoneNumber,
@@ -109,7 +107,6 @@ class _EditHomePageState extends State<EditHomePage> {
               }
 
               if (state is AddHomeError) {
-                print(state.errorMessage);
               }
             },
             bloc: homeBloc,
@@ -255,6 +252,10 @@ class _EditHomePageState extends State<EditHomePage> {
                           child: SvgPicture.asset(
                             editSVG,
                             color: housePrimaryColor,
+                            // colorFilter: ColorFilter.mode(
+                            //   color:housePrimaryColor
+
+                            // ),
                           ),
                         ),
                       ],
@@ -339,7 +340,6 @@ class _EditHomePageState extends State<EditHomePage> {
                                   images.add(state.files[i].path!);
                                 }
                                 field.didChange(images);
-                                print(images);
                               }
                             },
                           ),

@@ -3,7 +3,9 @@ import 'package:equatable/equatable.dart';
 class HouseDetail extends Equatable {
   final String? houseName, description;
   final num? amount, bedRoomCount, bathRoomCount;
-  final Images? images;
+  final List<String>? images;
+
+  
 
   const HouseDetail({
     required this.houseName,
@@ -16,7 +18,6 @@ class HouseDetail extends Equatable {
   });
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         houseName,
         description,
@@ -27,11 +28,4 @@ class HouseDetail extends Equatable {
       ];
 }
 
-class Images extends Equatable {
-  final List<String>? images;
 
-  const Images({required this.images});
-
-  @override
-  List<Object?> get props => [images];
-}

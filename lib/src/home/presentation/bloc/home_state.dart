@@ -31,9 +31,7 @@ class AddMultipleImageLoaded extends HomeState {
   AddMultipleImageLoaded({required this.files});
 }
 
-class AddMultipleImageLoading extends HomeState{
-  
-}
+class AddMultipleImageLoading extends HomeState {}
 
 class AddMultipleImageError extends HomeState {
   final String errorMessage;
@@ -42,24 +40,25 @@ class AddMultipleImageError extends HomeState {
 }
 
 class AddHomeLoaded extends HomeState {
-  AddHomeLoaded();
+  final DocumentReference<HouseDetailModel>? houses;
+  AddHomeLoaded({required this.houses});
 }
 
-class AddHomeLoading extends HomeState{}
+class AddHomeLoading extends HomeState {}
 
 class AddHomeError extends HomeState {
   final String errorMessage;
   AddHomeError({required this.errorMessage});
 }
 
-class GetAllHousesLoaded extends HomeState{
+class GetAllHousesLoaded extends HomeState {
   final QuerySnapshot<HouseDetail> houses;
   GetAllHousesLoaded({required this.houses});
-
 }
-class GetAllHousesLoading extends HomeState{}
-class GetAllHouseError extends HomeState{
+
+class GetAllHousesLoading extends HomeState {}
+
+class GetAllHouseError extends HomeState {
   final String errorMessage;
-   GetAllHouseError({required this.errorMessage});
+  GetAllHouseError({required this.errorMessage});
 }
-

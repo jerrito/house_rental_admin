@@ -10,14 +10,15 @@ class HouseDetailModel extends HouseDetail {
     required super.bathRoomCount,
   });
 
-  factory HouseDetailModel.fromJson(Map<String, dynamic> json) =>
+  factory HouseDetailModel.fromJson(Map<String, dynamic>? json) =>
       HouseDetailModel(
-          houseName: json["house_name"],
-          description: json["description"],
-          amount: json["amount"],
-          images: ImageModel.fromJson(json["images"]),
-          bedRoomCount: json["bed_room_count"],
-          bathRoomCount: json["bath_room_count"]);
+          houseName: json?["house_name"],
+          description: json?["description"],
+          amount: json?["amount"],
+          images:List<String>.from(json?["images"].map<List<String>>((e)=>
+          e)),
+          bedRoomCount: json?["bed_room_count"],
+          bathRoomCount: json?["bath_room_count"]);
 
   Map<String, dynamic> toMap() {
     return {
@@ -26,15 +27,10 @@ class HouseDetailModel extends HouseDetail {
       "amount": amount,
       "bed_room_count": bedRoomCount,
       "bath_room_count": bathRoomCount,
-      "images": images
+      "images":List.from(images!.map((e)=>
+      e),)
     };
   }
 }
 
-class ImageModel extends Images {
-  const ImageModel({required super.images});
 
-  factory ImageModel.fromJson(Map<String, dynamic>? json) {
-    return ImageModel(images: json?["images"]);
-  }
-}
