@@ -6,7 +6,7 @@ import 'package:house_rental_admin/core/usecase/usecase.dart';
 import 'package:house_rental_admin/src/authentication/presentation/widgets/default_button.dart';
 import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 
-buildProfileChangeBottomSheet(
+buildMultipleImageBottomSheet(
   BuildContext context,
   HomeBloc homeBloc,
 ) {
@@ -20,14 +20,16 @@ buildProfileChangeBottomSheet(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Space().height(context, 0.02),
-                const Text("Add Profile Picture"),
+                const Text("Add House Document Picture"),
                 Space().height(context, 0.04),
                 DefaultButton(
-                    label: "Camera",
-                    onTap: () {
-                      Navigator.pop(context);
-                      homeBloc.add(GetProfileCameraEvent(params: NoParams()));
-                    }),
+                  label: "Camera",
+                  onTap: () {
+                    Navigator.pop(context);
+                    homeBloc
+                        .add(GetHouseDocumentCameraEvent(params: NoParams()));
+                  },
+                ),
                 Space().height(context, 0.02),
                 BlocConsumer(
                     bloc: homeBloc,
@@ -42,8 +44,8 @@ buildProfileChangeBottomSheet(
                           label: "Gallery",
                           onTap: () {
                             //context.pop();
-                            homeBloc.add(
-                                GetProfileGalleryEvent(params: NoParams()));
+                            homeBloc.add(GetHouseDocumentGalleryEvent(
+                                params: NoParams()));
 
                             // Navigator.pop(context);
                           });

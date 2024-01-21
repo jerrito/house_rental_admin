@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 
 
 class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Curved Drawer Example'),
+        title: const Text('Curved Drawer Example'),
       ),
       drawer: buildCurvedDrawer(context),
-      body: Center(
+      body: const Center(
         child: Text('Main Content'),
       ),
     );
@@ -23,29 +25,29 @@ class MyHomePage extends StatelessWidget {
         child: ClipPath(
           clipper: CurvedDrawerClipper(),
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.blue,
             ),
             child: ListView(
               padding: EdgeInsets.zero,
               children: <Widget>[
-                DrawerHeader(
+                const DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                  ),
                   child: Text(
                     'Curved Drawer',
                     style: TextStyle(color: Colors.white, fontSize: 24),
                   ),
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                  ),
                 ),
                 ListTile(
-                  title: Text('Item 1'),
+                  title: const Text('Item 1'),
                   onTap: () {
                     // Handle item tap
                   },
                 ),
                 ListTile(
-                  title: Text('Item 2'),
+                  title: const Text('Item 2'),
                   onTap: () {
                     // Handle item tap
                   },

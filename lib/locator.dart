@@ -15,11 +15,16 @@ import 'package:house_rental_admin/src/authentication/domain/usecases/signin.dar
 import 'package:house_rental_admin/src/authentication/domain/usecases/get_cache_data.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/phone_number_login.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/signup.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/upload_multiple_images.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/verify_number.dart';
 import 'package:house_rental_admin/src/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:house_rental_admin/src/home/data/data_source/localds.dart';
+import 'package:house_rental_admin/src/home/data/data_source/remote_ds.dart';
 import 'package:house_rental_admin/src/home/data/repository/home_repository_impl.dart';
 import 'package:house_rental_admin/src/home/domain/repository/home_repository.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/add_house.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/add_multiple_image.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/get_all_houses.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_camera.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_gallery.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/up_load_image.dart';
@@ -36,32 +41,57 @@ Future<void> initDependencies() async {
 
   locator.registerFactory(
     () => AuthenticationBloc(
-        firebaseAuth: locator(),
-        signup: locator(),
-        verifyNumber: locator(),
-        verifyOTP: locator(),
-        getCacheData: locator(),
-        signin: locator(),
-        firebaseService: locator(),
-        updateUser: locator(),
-        addId: locator(),
-        verifyPhoneNumberLogin: locator(),
-            upLoadImage: locator(),
-),
+      firebaseAuth: locator(),
+      signup: locator(),
+      verifyNumber: locator(),
+      verifyOTP: locator(),
+      getCacheData: locator(),
+      signin: locator(),
+      firebaseService: locator(),
+      updateUser: locator(),
+      addId: locator(),
+      verifyPhoneNumberLogin: locator(),
+      upLoadImage: locator(),
+    ),
   );
 
-  locator.registerFactory(()=>
-  HomeBloc(
-    getProfileCamera: locator(),
-    getProfileGallery: locator(),
-    
-  ),
+  locator.registerFactory(
+    () => HomeBloc(
+      getProfileCamera: locator(),
+      getProfileGallery: locator(),
+      addMultipleImage: locator(),
+      addHouse: locator(),
+      getAllHouses: locator(),
+      uploadMultipleImages: locator(),
+    ),
   );
 
   //usecases
 
-locator.registerLazySingleton(
+  locator.registerLazySingleton(
+    () => GetAllHouses(
+      repository: locator(),
+    ),
+  );
+  
+  locator.registerLazySingleton(
+    () => UploadMultipleImages(
+      repository: locator(),
+    ),
+  );
+  locator.registerLazySingleton(
+    () => AddHouse(
+      repository: locator(),
+    ),
+  );
+  locator.registerLazySingleton(
     () => GetProfileCamera(
+      repository: locator(),
+    ),
+  );
+
+  locator.registerLazySingleton(
+    () => AddMultipleImage(
       repository: locator(),
     ),
   );
@@ -76,6 +106,10 @@ locator.registerLazySingleton(
     () => UpLoadImage(
       repository: locator(),
     ),
+  );
+
+  locator.registerLazySingleton(
+    () => FirebaseAuth.instance,
   );
 
   locator.registerLazySingleton(
@@ -94,10 +128,6 @@ locator.registerLazySingleton(
     () => Signin(
       repository: locator(),
     ),
-  );
-
-  locator.registerLazySingleton(
-    () => FirebaseAuth.instance,
   );
 
   locator.registerLazySingleton(
@@ -124,7 +154,11 @@ locator.registerLazySingleton(
     ),
   );
 
-  locator.registerLazySingleton(() => UpdateUser(repository: locator()));
+  locator.registerLazySingleton(
+    () => UpdateUser(
+      repository: locator(),
+    ),
+  );
 
   //repository
 
@@ -139,14 +173,23 @@ locator.registerLazySingleton(
 
   locator.registerLazySingleton<HomeRepository>(
     () => HomeRepositoryImpl(
-     
       networkInfo: locator(),
-   
       homeLocalDatasource: locator(),
+      homeRemoteDataSource: locator(),
     ),
   );
   //remoteds
 
+  locator.registerLazySingleton(
+    () => FirebaseService(
+      firebaseFirestore: locator(),
+      firebaseAuth: locator(),
+    ),
+  );
+
+  locator.registerLazySingleton<HomeRemoteDataSource>(
+    () => HomeRemoteDataSourceImpl(),
+  );
   locator.registerLazySingleton<NetworkInfo>(
     () => NetworkInfoImpl(
       dataConnectionChecker: locator(),
@@ -160,9 +203,7 @@ locator.registerLazySingleton(
   );
 
   locator.registerLazySingleton<HomeLocalDatasource>(
-    () => HomeLocalDatasourceImpl(
-     
-    ),
+    () => HomeLocalDatasourceImpl(),
   );
 
   final sharedPreference = await SharedPreferences.getInstance();
@@ -179,13 +220,6 @@ locator.registerLazySingleton(
 
   locator.registerLazySingleton(
     () => DataConnectionChecker(),
-  );
-
-  locator.registerLazySingleton(
-    () => FirebaseService(
-      firebaseFirestore: locator(),
-      firebaseAuth: locator(),
-    ),
   );
 
   locator.registerLazySingleton(

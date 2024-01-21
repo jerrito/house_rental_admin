@@ -100,10 +100,11 @@ class UpLoadImageLoading extends AuthenticationState {}
 
 class UpLoadImageError extends AuthenticationState {
   final String errorMessage;
-  UpLoadImageError({required this.errorMessage});
+  const UpLoadImageError({required this.errorMessage});
 }
 
 class UpLoadImageLoaded extends AuthenticationState {
   final String imageURL;
-  UpLoadImageLoaded({required this.imageURL});
+  const UpLoadImageLoaded({required this.imageURL});
 }
+

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:house_rental_admin/src/authentication/domain/entities/owner.dart';
 
 class OwnerModel extends Owner {
@@ -16,19 +18,19 @@ class OwnerModel extends Owner {
     required super.uid,
   });
 
-  factory OwnerModel.fromJson(Map<String, dynamic> json) => OwnerModel(
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-        phoneNumber: json["phone_number"],
-        profileURL: json["profile_URL"],
-        email: json["email"],
-        password: json["password"],
-        houseGPSAddress: json["houseGPSAddress"],
-        townORCity: json["townORCity"],
-        role: json["role"],
-        houseDocument: json["houseDocument"],
-        id: json["id"],
-        uid: json["uid"],
+  factory OwnerModel.fromJson(Map<String, dynamic>? json) => OwnerModel(
+        firstName: json?["first_name"],
+        lastName: json?["last_name"],
+        phoneNumber: json?["phone_number"],
+        profileURL: json?["profile_URL"],
+        email: json?["email"],
+        password: json?["password"],
+        houseGPSAddress: json?["house_GPS_address"],
+        townORCity: json?["town_or_city"],
+        role: json?["role"],
+        houseDocument: json?["house_document"],
+        id: json?["id"],
+        uid: json?["uid"],
       );
 
       @override
@@ -40,7 +42,7 @@ class OwnerModel extends Owner {
         "profile_URL":profileURL,
         "email":email,
         "password":password,
-        "house_GPS_adddress":houseGPSAddress,
+        "house_GPS_address":houseGPSAddress,
         "town_or_city":townORCity,
         "role":role,
         "house_document":houseDocument,

@@ -13,7 +13,6 @@ import 'package:house_rental_admin/src/authentication/domain/usecases/signup.dar
 import 'package:house_rental_admin/src/authentication/domain/usecases/up_load_image.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/update_user.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/verify_otp.dart';
-
 import 'package:house_rental_admin/src/authentication/domain/usecases/verify_number.dart';
 
 part 'authentication_event.dart';
@@ -32,19 +31,19 @@ class AuthenticationBloc
   final FirebaseService firebaseService;
   final AddId addId;
   final UpLoadImage upLoadImage;
-  AuthenticationBloc(
-      {required this.verifyPhoneNumberLogin,
-      required this.signup,
-      required this.firebaseAuth,
-      required this.verifyNumber,
-      required this.verifyOTP,
-      required this.getCacheData,
-      required this.signin,
-      required this.firebaseService,
-      required this.updateUser,
-      required this.addId,
-      required this.upLoadImage,})
-      : super(AuthenticationInitial()) {
+  AuthenticationBloc({
+    required this.verifyPhoneNumberLogin,
+    required this.signup,
+    required this.firebaseAuth,
+    required this.verifyNumber,
+    required this.verifyOTP,
+    required this.getCacheData,
+    required this.signin,
+    required this.firebaseService,
+    required this.updateUser,
+    required this.addId,
+    required this.upLoadImage,
+  }) : super(AuthenticationInitial()) {
     on<SignupEvent>((event, emit) async {
       emit(SignupLoading());
 
@@ -192,7 +191,7 @@ class AuthenticationBloc
       );
     });
 
-     //!UPLOAD IMAGE TO CLOUD STORE
+    //!UPLOAD IMAGE TO CLOUD STORE
     on<UpLoadImageEvent>((event, emit) async {
       emit(UpLoadImageLoading());
 
@@ -201,5 +200,7 @@ class AuthenticationBloc
       emit(response.fold((error) => UpLoadImageError(errorMessage: error),
           (response) => UpLoadImageLoaded(imageURL: response)));
     });
+
+    
   }
 }

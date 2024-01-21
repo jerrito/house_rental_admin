@@ -1,12 +1,13 @@
 import 'package:go_router/go_router.dart';
 import 'package:house_rental_admin/connection_page.dart';
-import 'package:house_rental_admin/src/authentication/presentation/pages/document_page.dart';
+import 'package:house_rental_admin/src/authentication/data/models/owner_model.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/landing_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/otp_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/phone_number_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/signin_page.dart';
 import 'package:house_rental_admin/src/authentication/presentation/pages/signup_page.dart';
 import 'package:house_rental_admin/src/errors/presentation/pages/no_internet_page.dart';
+import 'package:house_rental_admin/src/home/data/models/house_model.dart';
 import 'package:house_rental_admin/src/home/presentation/pages/add_home.dart';
 import 'package:house_rental_admin/src/home/presentation/pages/edit_home.dart';
 import 'package:house_rental_admin/src/home/presentation/pages/home_page.dart';
@@ -88,7 +89,10 @@ GoRouter goRouter() {
               path: "addHome",
               name: "addHome",
               builder: (context, state) {
-              return const  AddHomePage();
+              return   AddHomePage(
+                id:state.uri.queryParameters["id"].toString(),
+                phoneNumber: state.uri.queryParameters["phoneNumber"].toString(),
+              );
               },
             ),
 
@@ -96,7 +100,10 @@ GoRouter goRouter() {
               path: "editHome",
               name: "editHome",
               builder: (context, state) {
-              return const  EditHomePage();
+              return   EditHomePage(
+               house:HouseDetailModel.fromJson(const {}),
+
+              );
               },
             ),
 
@@ -104,7 +111,9 @@ GoRouter goRouter() {
               path: "profile",
               name: "profile",
               builder: (context, state) {
-              return const  ProfilePage();
+              return   ProfilePage(
+                owner:OwnerModel.fromJson(const {})
+              );
               },
             ),
 

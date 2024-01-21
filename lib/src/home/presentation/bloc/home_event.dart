@@ -22,4 +22,23 @@ class GetHouseDocumentGalleryEvent extends HomeEvent {
   GetHouseDocumentGalleryEvent({required this.params});
 }
 
+class AddMultipleImageEvent extends HomeEvent {
+  final NoParams params;
 
+  AddMultipleImageEvent({required this.params});
+}
+
+class AddHomeEvent extends HomeEvent {
+  final Map<String, dynamic> params;
+  AddHomeEvent({required this.params});
+}
+
+class GetAllHousesEvent extends HomeEvent {
+  final Map<String, dynamic> params;
+  GetAllHousesEvent({required this.params});
+}
+
+class UpLoadMultipleImageEvent extends HomeEvent {
+  final Map<String, dynamic> params;
+   UpLoadMultipleImageEvent({required this.params});
+}

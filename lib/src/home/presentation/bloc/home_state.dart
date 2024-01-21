@@ -25,4 +25,52 @@ class HouseDocumentError extends HomeState {
   HouseDocumentError({required this.errorMessage});
 }
 
+class AddMultipleImageLoaded extends HomeState {
+  final List<PlatformFile> files;
 
+  AddMultipleImageLoaded({required this.files});
+}
+
+class AddMultipleImageLoading extends HomeState {}
+
+class AddMultipleImageError extends HomeState {
+  final String errorMessage;
+
+  AddMultipleImageError({required this.errorMessage});
+}
+
+class AddHomeLoaded extends HomeState {
+  final DocumentReference<HouseDetailModel>? houses;
+  AddHomeLoaded({required this.houses});
+}
+
+class AddHomeLoading extends HomeState {}
+
+class AddHomeError extends HomeState {
+  final String errorMessage;
+  AddHomeError({required this.errorMessage});
+}
+
+class GetAllHousesLoaded extends HomeState {
+  final QuerySnapshot<HouseDetail> houses;
+  GetAllHousesLoaded({required this.houses});
+}
+
+class GetAllHousesLoading extends HomeState {}
+
+class GetAllHouseError extends HomeState {
+  final String errorMessage;
+  GetAllHouseError({required this.errorMessage});
+}
+
+
+class UpLoadMultipleImageLoading extends HomeState{}
+class UpLoadMultipleImageError extends HomeState {
+  final String errorMessage;
+   UpLoadMultipleImageError({required this.errorMessage});
+}
+
+class UpLoadMultipleImageLoaded extends HomeState {
+  final List<String> imageURL;
+   UpLoadMultipleImageLoaded({required this.imageURL});
+}

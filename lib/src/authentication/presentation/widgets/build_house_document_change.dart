@@ -25,9 +25,10 @@ buildHouseDocumentChangeBottomSheet(
                 DefaultButton(
                   label: "Camera",
                   onTap: () {
-                    Navigator.pop(context);
+                    
                     homeBloc
-                        .add(GetHouseDocumentCameraEvent(params: NoParams()));
+                        .add(GetHouseDocumentCameraEvent(params: NoParams(),),);
+                        //Navigator.pop(context);
                   },
                 ),
                 Space().height(context, 0.02),
@@ -46,6 +47,8 @@ buildHouseDocumentChangeBottomSheet(
                             //context.pop();
                             homeBloc.add(GetHouseDocumentGalleryEvent(
                                 params: NoParams()));
+
+                               // Navigator.pop(context);
 
                             // Navigator.pop(context);
                           });
