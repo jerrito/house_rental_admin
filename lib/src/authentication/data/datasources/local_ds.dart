@@ -10,7 +10,6 @@ abstract class AuthenticationLocalDatasource {
   Future cacheUserData(Owner user);
   Future<OwnerModel> getUserCachedData();
   Future<String> upLoadImage(Map<String, dynamic> params);
-  Future<List<String>> upLoadMultipleImages(Map<String, dynamic> params);
 }
 
 class AuhenticationLocalDataSourceImpl
@@ -54,27 +53,5 @@ class AuhenticationLocalDataSourceImpl
     return returnURL!;
   }
 
-  @override
-  Future<List<String>> upLoadMultipleImages(Map<String, dynamic> params) async {
-    //Upload file
-    final upLoadPath = FirebaseStorage.instance.ref().child(
-          params["phone_number"],
-        ).child("houses");
-    List<String> returnURL=[];
-
-    for (int i = 0; i < params["images"]; i++) {
-      final upLoadTask = upLoadPath.putFile(
-        File(params["path"][i]),
-      );
-
-      await upLoadTask.whenComplete(
-        () =>
-            upLoadPath.getDownloadURL().then((value) => returnURL.add(value)),
-      );
-    }
-
-    //print(returnURL);
-
-    return returnURL;
-  }
+  
 }

@@ -9,6 +9,7 @@ import 'package:house_rental_admin/src/home/domain/usecases/add_multiple_image.d
 import 'package:house_rental_admin/src/home/domain/usecases/get_all_houses.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_camera.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_gallery.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/upload_multiple_images.dart';
 import 'package:image_picker/image_picker.dart';
 part 'home_event.dart';
 part 'home_state.dart';
@@ -19,12 +20,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final AddMultipleImage addMultipleImage;
   final GetAllHouses getAllHouses;
   final AddHouse addHouse;
+  final UploadMultipleImages uploadMultipleImages;
+
   HomeBloc({
     required this.getAllHouses,
     required this.addMultipleImage,
     required this.getProfileCamera,
     required this.getProfileGallery,
     required this.addHouse,
+    required this.uploadMultipleImages,
+
   }) : super(HomeInitState()) {
     //!GET PROFILE Camera
     on<GetProfileCameraEvent>((event, emit) async {
@@ -99,6 +104,25 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           (response) => GetAllHousesLoaded(
             houses: response
           ),),);
+    });
+
+    //!UPLOAD MULTIPLE IMAGES TO CLOUD
+    on<UpLoadMultipleImageEvent>((event, emit) async {
+      emit(
+        UpLoadMultipleImageLoading(),
+      );
+      final response = await uploadMultipleImages.call(
+        event.params,
+      );
+
+      emit(
+        response.fold(
+          (error) => UpLoadMultipleImageError(errorMessage: error),
+          (response) => UpLoadMultipleImageLoaded(
+            imageURL: response,
+          ),
+        ),
+      );
     });
   }
 }

@@ -81,4 +81,15 @@ class HomeRepositoryImpl implements HomeRepository {
       return Left(networkInfo.noNetworkMessage);
     }
   }
+
+  @override
+  Future<Either<String, List<String>>> upLoadMultipleImages(
+      Map<String, dynamic> params) async {
+    try {
+      final response = await homeRemoteDataSource.upLoadMultipleImages(params);
+      return Right(response);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
 }

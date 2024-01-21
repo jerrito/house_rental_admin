@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:house_rental_admin/src/home/data/models/house_model.dart';
 
 abstract class HomeRemoteDataSource {
@@ -6,6 +9,9 @@ abstract class HomeRemoteDataSource {
       Map<String, dynamic> params);
 
   Future<QuerySnapshot<HouseDetailModel>> getAllHouses(Map<String, dynamic> params);
+
+    Future<List<String>> upLoadMultipleImages(Map<String, dynamic> params);
+
 }
 
 class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
@@ -47,5 +53,29 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
         .get();
 
     return response;
+  }
+
+  @override
+  Future<List<String>> upLoadMultipleImages(Map<String, dynamic> params) async {
+    //Upload file
+    final upLoadPath = FirebaseStorage.instance.ref().child(
+          params["phone_number"],
+        ).child("houses");
+    List<String> returnURL=[];
+
+    for (int i = 0; i < params["images"]; i++) {
+      final upLoadTask = upLoadPath.putFile(
+        File(params["path"][i]),
+      );
+
+      await upLoadTask.whenComplete(
+        () =>
+            upLoadPath.getDownloadURL().then((value) => returnURL.add(value)),
+      );
+    }
+
+    //print(returnURL);
+
+    return returnURL;
   }
 }

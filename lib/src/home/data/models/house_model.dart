@@ -15,7 +15,7 @@ class HouseDetailModel extends HouseDetail {
           houseName: json?["house_name"],
           description: json?["description"],
           amount: json?["amount"],
-          images:List<String>.from(json?["images"].map<List<String>>((e)=>
+          images:List<String>.from(json?["images"].map((e)=>
           e)),
           bedRoomCount: json?["bed_room_count"],
           bathRoomCount: json?["bath_room_count"]);
@@ -27,8 +27,7 @@ class HouseDetailModel extends HouseDetail {
       "amount": amount,
       "bed_room_count": bedRoomCount,
       "bath_room_count": bathRoomCount,
-      "images":List.from(images!.map((e)=>
-      e),)
+      "images":images
     };
   }
 }

@@ -79,7 +79,7 @@ class _EditHomePageState extends State<EditHomePage> {
                   "path": images,
                   "images": images.length
                 };
-                authBloc.add(UpLoadMultipleImageEvent(params: params));
+                homeBloc.add(UpLoadMultipleImageEvent(params: params));
 
                 // Map<String, dynamic> params = {
                 //   "phone_number": widget.owner.phoneNumber,

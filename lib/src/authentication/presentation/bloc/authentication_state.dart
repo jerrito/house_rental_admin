@@ -107,13 +107,4 @@ class UpLoadImageLoaded extends AuthenticationState {
   final String imageURL;
   const UpLoadImageLoaded({required this.imageURL});
 }
-class UpLoadMultipleImageLoading extends AuthenticationState{}
-class UpLoadMultipleImageError extends AuthenticationState {
-  final String errorMessage;
-  const UpLoadMultipleImageError({required this.errorMessage});
-}
 
-class UpLoadMultipleImageLoaded extends AuthenticationState {
-  final List<String> imageURL;
-  const UpLoadMultipleImageLoaded({required this.imageURL});
-}

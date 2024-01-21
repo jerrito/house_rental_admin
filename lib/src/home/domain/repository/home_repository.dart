@@ -12,4 +12,7 @@ abstract class HomeRepository {
   Future<Either<String, DocumentReference<HouseDetailModel>?>> addHouse(Map<String,dynamic> params);
 
   Future<Either<String,QuerySnapshot<HouseDetail>>> getAllHouses(Map<String,dynamic> params);
+
+    Future<Either<String, List<String>>> upLoadMultipleImages(Map<String, dynamic> params);
+
 }

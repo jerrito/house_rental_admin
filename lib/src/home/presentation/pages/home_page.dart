@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: () {
-               
+                print(owner?.id);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (BuildContext context) {
                   return AddHomePage(
@@ -89,10 +89,7 @@ class _HomePageState extends State<HomePage> {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-
-                        Container(
-
-                        ),
+                        Container(),
                         Text(owner?.firstName ?? "d"),
                       ],
                     );

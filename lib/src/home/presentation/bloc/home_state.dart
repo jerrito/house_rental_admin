@@ -62,3 +62,15 @@ class GetAllHouseError extends HomeState {
   final String errorMessage;
   GetAllHouseError({required this.errorMessage});
 }
+
+
+class UpLoadMultipleImageLoading extends HomeState{}
+class UpLoadMultipleImageError extends HomeState {
+  final String errorMessage;
+   UpLoadMultipleImageError({required this.errorMessage});
+}
+
+class UpLoadMultipleImageLoaded extends HomeState {
+  final List<String> imageURL;
+   UpLoadMultipleImageLoaded({required this.imageURL});
+}

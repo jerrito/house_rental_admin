@@ -15,7 +15,7 @@ import 'package:house_rental_admin/src/authentication/domain/usecases/signin.dar
 import 'package:house_rental_admin/src/authentication/domain/usecases/get_cache_data.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/phone_number_login.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/signup.dart';
-import 'package:house_rental_admin/src/authentication/domain/usecases/upload_multiple_images.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/upload_multiple_images.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/verify_number.dart';
 import 'package:house_rental_admin/src/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:house_rental_admin/src/home/data/data_source/localds.dart';
@@ -52,22 +52,28 @@ Future<void> initDependencies() async {
       addId: locator(),
       verifyPhoneNumberLogin: locator(),
       upLoadImage: locator(),
-      uploadMultipleImages: locator(),
     ),
   );
 
   locator.registerFactory(
     () => HomeBloc(
-        getProfileCamera: locator(),
-        getProfileGallery: locator(),
-        addMultipleImage: locator(),
-        addHouse: locator(),
-        getAllHouses: locator()),
+      getProfileCamera: locator(),
+      getProfileGallery: locator(),
+      addMultipleImage: locator(),
+      addHouse: locator(),
+      getAllHouses: locator(),
+      uploadMultipleImages: locator(),
+    ),
   );
 
   //usecases
 
-  locator.registerLazySingleton(() => GetAllHouses(repository: locator()));
+  locator.registerLazySingleton(
+    () => GetAllHouses(
+      repository: locator(),
+    ),
+  );
+  
   locator.registerLazySingleton(
     () => UploadMultipleImages(
       repository: locator(),
