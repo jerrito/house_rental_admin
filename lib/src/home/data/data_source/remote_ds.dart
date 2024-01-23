@@ -8,10 +8,12 @@ abstract class HomeRemoteDataSource {
   Future<DocumentReference<HouseDetailModel>?> addHouse(
       Map<String, dynamic> params);
 
-  Future<QuerySnapshot<HouseDetailModel>> getAllHouses(Map<String, dynamic> params);
+  Future<QuerySnapshot<HouseDetailModel>> getAllHouses(
+      Map<String, dynamic> params);
 
-    Future<List<String>> upLoadMultipleImages(Map<String, dynamic> params);
+  Future<List<String>> upLoadMultipleImages(Map<String, dynamic> params);
 
+  Future<void> updateHouse(Map<String, dynamic> params);
 }
 
 class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
@@ -31,10 +33,11 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
         .doc(params["id"])
         .collection("houses")
         .withConverter<HouseDetailModel>(
-        fromFirestore: (snapshot, _) => HouseDetailModel.fromJson(snapshot.data()!),
-        toFirestore: (house, _) => house.toMap(),
-      )
-      .add(HouseDetailModel.fromJson(params));
+          fromFirestore: (snapshot, _) =>
+              HouseDetailModel.fromJson(snapshot.data()!),
+          toFirestore: (house, _) => house.toMap(),
+        )
+        .add(HouseDetailModel.fromJson(params));
     return response;
   }
 
@@ -58,10 +61,13 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
   @override
   Future<List<String>> upLoadMultipleImages(Map<String, dynamic> params) async {
     //Upload file
-    final upLoadPath = FirebaseStorage.instance.ref().child(
+    final upLoadPath = FirebaseStorage.instance
+        .ref()
+        .child(
           params["phone_number"],
-        ).child("houses");
-    List<String> returnURL=[];
+        )
+        .child("houses");
+    List<String> returnURL = [];
 
     for (int i = 0; i < params["images"]; i++) {
       final upLoadTask = upLoadPath.putFile(
@@ -69,13 +75,26 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
       );
 
       await upLoadTask.whenComplete(
-        () =>
-            upLoadPath.getDownloadURL().then((value) => returnURL.add(value)),
+        () => upLoadPath.getDownloadURL().then((value) => returnURL.add(value)),
       );
     }
 
     //print(returnURL);
 
     return returnURL;
+  }
+
+  @override
+  Future<void> updateHouse(Map<String, dynamic> params) async{
+    final response = await FirebaseFirestore.instance
+        .collection('houseRentalAdminAccount')
+        .doc(params["id"])
+        .collection("houses")
+        .withConverter<HouseDetailModel>(
+          fromFirestore: (snapshot, _) =>
+              HouseDetailModel.fromJson(snapshot.data()!),
+          toFirestore: (house, _) => house.toMap(),
+        ).doc(params["id2"]).update(params);
+    return response;
   }
 }

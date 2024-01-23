@@ -74,3 +74,11 @@ class UpLoadMultipleImageLoaded extends HomeState {
   final List<String> imageURL;
    UpLoadMultipleImageLoaded({required this.imageURL});
 }
+
+class UpdateHouseLoading extends HomeState{}
+class UpdateHouseError extends HomeState{
+
+  final String errorMessage;
+  UpdateHouseError({required this.errorMessage});
+}
+class UpdateHouseLoaded extends HomeState{}

@@ -7,6 +7,8 @@ import 'package:house_rental_admin/src/authentication/presentation/bloc/authenti
 import 'package:go_router/go_router.dart';
 import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 import 'package:house_rental_admin/src/home/presentation/pages/add_home.dart';
+import 'package:house_rental_admin/src/home/presentation/pages/edit_home.dart';
+import 'package:house_rental_admin/src/home/presentation/widgets/list_row_houses.dart';
 import '../widgets/bottom_nav_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -54,7 +56,6 @@ class _HomePageState extends State<HomePage> {
                       id: owner?.id ?? "",
                       phoneNumber: owner?.phoneNumber ?? "");
                 }));
-               
               },
               icon: const Icon(Icons.add))
         ],
@@ -62,55 +63,61 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBarWidget(
         index: 0,
       ),
-      body: BlocConsumer(
-          bloc: authBloc,
-          listener: (context, state) {
-            if (state is GetCacheDataLoaded) {
-              owner = state.owner;
-              debugPrint(owner?.toMap().toString());
-              setState(() {});
-              Map<String, dynamic> params = {};
-              homeBloc.add(GetAllHousesEvent(params: params));
-            }
+      body: BlocListener(
+        bloc: authBloc,
+        listener: (context, state) {
+          if (state is GetCacheDataLoaded) {
+            owner = state.owner;
+            debugPrint(owner?.toMap().toString());
+            setState(() {});
+            Map<String, dynamic> params = {"id": owner?.id ?? ""};
+            homeBloc.add(GetAllHousesEvent(params: params));
+          }
+        },
+        child: BlocConsumer(
+            bloc: homeBloc,
+            listener: (context, state) {
+              if (state is GetAllHousesLoaded) {}
 
-            if (state is GetAllHousesLoaded) {
-
-            }
-
-            if (state is GetAllHouseError) {}
-          },
-          builder: (context, state) {
-            if (state is GetAllHousesLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is GetAllHousesLoaded) {
-              return ListView.builder(
-                  itemCount: state.houses.docs.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-
-                        const Text(""),
-                        CarouselSlider.builder(
-                          
-                          itemCount:state.houses.docs.length,
-                          options: CarouselOptions(
-                            
-                          ),
-                          itemBuilder: (context,index, indexs) {
-                            return Container();
-                          }
-                        ),
-                        Text(owner?.firstName ?? "d"),
-                      ],
-                    );
-                  });
-            }
-            return const SizedBox();
-          }),
+              if (state is GetAllHouseError) {
+                debugPrint(state.errorMessage);
+              }
+            },
+            builder: (context, state) {
+              if (state is GetAllHousesLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (state is GetAllHousesLoaded) {
+                return ListView.builder(
+                    itemCount: state.houses.docs.length,
+                    itemBuilder: (context, index) {
+                      return HouseRowDetails(
+                        onTap: () {
+                          print("touched $index");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditHomePage(
+                                    house: state.houses.docs[index].data()),),
+                          );
+                        },
+                        bedRoomCount:
+                            state.houses.docs[index].data().bedRoomCount ?? 0,
+                        bathRoomCount:
+                            state.houses.docs[index].data().bathRoomCount ?? 0,
+                        houseIMageURL:
+                            state.houses.docs[index].data().images?[0] ?? "",
+                        houseName:
+                            state.houses.docs[index].data().houseName ?? "",
+                        amount: state.houses.docs[index].data().amount ?? 0,
+                      );
+                    });
+              }
+              return const SizedBox();
+            }),
+      ),
     );
   }
 }

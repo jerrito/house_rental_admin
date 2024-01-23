@@ -42,3 +42,8 @@ class UpLoadMultipleImageEvent extends HomeEvent {
   final Map<String, dynamic> params;
    UpLoadMultipleImageEvent({required this.params});
 }
+
+class UpdateHouseEvent extends HomeEvent {
+  final Map<String,dynamic> params;
+  UpdateHouseEvent({required this.params});
+}
