@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_rental_admin/locator.dart';
@@ -53,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                       id: owner?.id ?? "",
                       phoneNumber: owner?.phoneNumber ?? "");
                 }));
-                context.goNamed("addHome");
+               
               },
               icon: const Icon(Icons.add))
         ],
@@ -72,7 +73,9 @@ class _HomePageState extends State<HomePage> {
               homeBloc.add(GetAllHousesEvent(params: params));
             }
 
-            if (state is GetAllHousesLoaded) {}
+            if (state is GetAllHousesLoaded) {
+
+            }
 
             if (state is GetAllHouseError) {}
           },
@@ -89,7 +92,18 @@ class _HomePageState extends State<HomePage> {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(),
+
+                        const Text(""),
+                        CarouselSlider.builder(
+                          
+                          itemCount:state.houses.docs.length,
+                          options: CarouselOptions(
+                            
+                          ),
+                          itemBuilder: (context,index, indexs) {
+                            return Container();
+                          }
+                        ),
                         Text(owner?.firstName ?? "d"),
                       ],
                     );

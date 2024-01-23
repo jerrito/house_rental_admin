@@ -108,9 +108,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     //!UPLOAD MULTIPLE IMAGES TO CLOUD
     on<UpLoadMultipleImageEvent>((event, emit) async {
-      emit(
-        UpLoadMultipleImageLoading(),
-      );
+      emit(UpLoadMultipleImageLoading());
       final response = await uploadMultipleImages.call(
         event.params,
       );

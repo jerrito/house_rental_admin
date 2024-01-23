@@ -24,7 +24,7 @@ class AddHomePage extends StatefulWidget {
     super.key,
     required this.id,
     required this.phoneNumber,
-  });
+  }); 
 
   @override
   State<AddHomePage> createState() => _AddHomePageState();
@@ -45,6 +45,7 @@ class _AddHomePageState extends State<AddHomePage> {
   @override
   void initState() {
     print("${widget.id} jj");
+    print("${widget.phoneNumber} jj");
     
     super.initState();
   }
@@ -101,7 +102,7 @@ class _AddHomePageState extends State<AddHomePage> {
             );
           }
           if (state is UpLoadMultipleImageLoading) {
-            const Center(child: CircularProgressIndicator());
+          return  const Center(child: CircularProgressIndicator());
           }
           return bottomSheetButton(
             context: context,
