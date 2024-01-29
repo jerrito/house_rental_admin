@@ -18,5 +18,6 @@ abstract class HomeRepository {
   Future<Either<String, List<String>>> upLoadMultipleImages(
       Map<String, dynamic> params);
 
+ 
   Future<Either<String, void>> updateHouse(Map<String, dynamic> params);
 }
