@@ -8,6 +8,7 @@ class HouseDetailModel extends HouseDetail {
     required super.images,
     required super.bedRoomCount,
     required super.bathRoomCount,
+     required super.owner, required super.phoneNumber 
   });
 
   factory HouseDetailModel.fromJson(Map<String, dynamic>? json) =>
@@ -18,12 +19,16 @@ class HouseDetailModel extends HouseDetail {
           images:List<String>.from(json?["images"].map((e)=>
           e)),
           bedRoomCount: json?["bed_room_count"],
-          bathRoomCount: json?["bath_room_count"]);
+          bathRoomCount: json?["bath_room_count"], 
+          phoneNumber: json?["phone_number"], 
+          owner: json?["owner"]);
 
   Map<String, dynamic> toMap() {
     return {
       "house_name": houseName,
       "description": description,
+      "owner":owner,
+      "phone_number":phoneNumber,
       "amount": amount,
       "bed_room_count": bedRoomCount,
       "bath_room_count": bathRoomCount,

@@ -54,6 +54,7 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(builder: (BuildContext context) {
                   return AddHomePage(
                       id: owner?.id ?? "",
+                      name: "${owner?.firstName} ${owner?.lastName}" ,
                       phoneNumber: owner?.phoneNumber ?? "");
                 }));
               },

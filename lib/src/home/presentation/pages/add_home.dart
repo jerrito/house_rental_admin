@@ -19,11 +19,12 @@ import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class AddHomePage extends StatefulWidget {
-  final String id, phoneNumber;
+  final String id, phoneNumber ,name;
   const AddHomePage({
     super.key,
     required this.id,
     required this.phoneNumber,
+    required this.name
   }); 
 
   @override
@@ -64,6 +65,8 @@ class _AddHomePageState extends State<AddHomePage> {
               "bed_room_count": num.parse(bedRoomController.text),
               "bath_room_count": num.parse(bathRoomController.text),
               "images": state.imageURL,
+              "owner": widget.name,
+              "phone_number": widget.phoneNumber,
               "id": widget.id
             };
             homeBloc.add(

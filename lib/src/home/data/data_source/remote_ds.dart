@@ -29,8 +29,8 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
   Future<DocumentReference<HouseDetailModel>> addHouse(
       Map<String, dynamic> params) async {
     final response = await FirebaseFirestore.instance
-        .collection('houseRentalAdminAccount')
-        .doc(params["id"])
+        // .collection('houseRentalAdminAccount')
+        // .doc(params["id"])
         .collection("houses")
         .withConverter<HouseDetailModel>(
           fromFirestore: (snapshot, _) =>
