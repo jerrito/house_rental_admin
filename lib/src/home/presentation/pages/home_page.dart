@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(builder: (BuildContext context) {
                   return AddHomePage(
                       id: owner?.id ?? "",
-                      name: "${owner?.firstName} ${owner?.lastName}" ,
+                      name: "${owner?.firstName} ${owner?.lastName}",
                       phoneNumber: owner?.phoneNumber ?? "");
                 }));
               },
@@ -71,7 +71,10 @@ class _HomePageState extends State<HomePage> {
             owner = state.owner;
             debugPrint(owner?.toMap().toString());
             setState(() {});
-            Map<String, dynamic> params = {"id": owner?.id ?? ""};
+            Map<String, dynamic> params = {
+              "id": owner?.id ?? "",
+              "phone_number": owner?.phoneNumber ?? "",
+            };
             homeBloc.add(GetAllHousesEvent(params: params));
           }
         },
@@ -100,8 +103,9 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => EditHomePage(
-                                    house: state.houses.docs[index].data()),),
+                              builder: (context) => EditHomePage(
+                                  house: state.houses.docs[index].data()),
+                            ),
                           );
                         },
                         bedRoomCount:

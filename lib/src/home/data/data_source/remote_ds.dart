@@ -45,9 +45,9 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
   Future<QuerySnapshot<HouseDetailModel>> getAllHouses(
       Map<String, dynamic> params) async {
     final response = await FirebaseFirestore.instance
-        .collection('houseRentalAdminAccount')
-        .doc(params["id"])
+        
         .collection("houses")
+        .where("phone_number",isEqualTo: params["phone_number"])
         .withConverter<HouseDetailModel>(
           fromFirestore: (snapshot, _) =>
               HouseDetailModel.fromJson(snapshot.data()!),
@@ -87,7 +87,7 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
   @override
   Future<void> updateHouse(Map<String, dynamic> params) async{
     final response = await FirebaseFirestore.instance
-        .collection('houseRentalAdminAccount')
+        //.collection('houseRentalAdminAccount')
         .doc(params["id"])
         .collection("houses")
         .withConverter<HouseDetailModel>(
