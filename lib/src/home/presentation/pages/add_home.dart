@@ -67,6 +67,9 @@ class _AddHomePageState extends State<AddHomePage> {
               "images": state.imageURL,
               "owner": widget.name,
               "phone_number": widget.phoneNumber,
+              "lat": "",
+              "long": "",
+              "category":""
               //"id": widget.id
             };
             homeBloc.add(

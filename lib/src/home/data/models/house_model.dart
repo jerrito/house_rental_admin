@@ -11,6 +11,9 @@ class HouseDetailModel extends HouseDetail {
     required super.owner,
     required super.phoneNumber,
     required super.isAvailable,
+    required super.category,
+    required super.lat,
+    required super.long,
   });
 
   factory HouseDetailModel.fromJson(Map<String, dynamic>? json) =>
@@ -23,7 +26,10 @@ class HouseDetailModel extends HouseDetail {
           bathRoomCount: json?["bath_room_count"],
           phoneNumber: json?["phone_number"],
           owner: json?["owner"],
-          isAvailable:json?["is_available"]);
+          isAvailable: json?["is_available"], 
+          category: json?["category"],
+          lat: json?["lat"],
+          long: json?["long"]);
 
   Map<String, dynamic> toMap() {
     return {
@@ -35,7 +41,10 @@ class HouseDetailModel extends HouseDetail {
       "bed_room_count": bedRoomCount,
       "bath_room_count": bathRoomCount,
       "images": images,
-      "is_available":isAvailable
+      "category": category,
+      "long": long,
+      "lat": lat,
+      "is_available": isAvailable
     };
   }
 }

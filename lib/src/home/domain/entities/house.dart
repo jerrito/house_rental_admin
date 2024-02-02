@@ -1,12 +1,15 @@
 import 'package:equatable/equatable.dart';
 
 class HouseDetail extends Equatable {
-  final String? houseName, owner, phoneNumber, description;
-  final num? amount, bedRoomCount, bathRoomCount;
+  final String? houseName, owner, phoneNumber, description, category;
+  final num? amount, bedRoomCount, bathRoomCount, lat, long;
   final bool? isAvailable;
   final List<String>? images;
 
   const HouseDetail({
+    required this.category,
+    required this.lat,
+    required this.long,
     required this.owner,
     required this.phoneNumber,
     required this.houseName,
@@ -29,5 +32,8 @@ class HouseDetail extends Equatable {
         bathRoomCount,
         images,
         isAvailable,
+        lat,
+        long,
+        category
       ];
 }
