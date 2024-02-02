@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:go_router/go_router.dart';
 import 'package:house_rental_admin/connection_page.dart';
 import 'package:house_rental_admin/src/authentication/data/models/owner_model.dart';
@@ -102,7 +104,7 @@ GoRouter goRouter() {
               name: "editHome",
               builder: (context, state) {
               return   EditHomePage(
-               house:HouseDetailModel.fromJson(const {}),
+               house:jsonDecode(state.uri.queryParameters["house"].toString(),),
 
               );
               },

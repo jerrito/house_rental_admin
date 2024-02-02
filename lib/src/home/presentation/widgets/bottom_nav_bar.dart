@@ -7,7 +7,16 @@ import 'package:go_router/go_router.dart';
 
 class BottomNavigationBarWidget extends StatefulWidget {
   int index;
-  BottomNavigationBarWidget({super.key, required this.index});
+  void Function()? addHome;
+  void Function()? editHome;
+  void Function()? profile;
+  BottomNavigationBarWidget({
+    super.key,
+    this.editHome,
+    this.profile,
+    this.addHome,
+    required this.index,
+  });
 
   @override
   State<BottomNavigationBarWidget> createState() =>
@@ -18,20 +27,18 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      
       currentIndex: widget.index,
       type: BottomNavigationBarType.fixed,
       onTap: (value) {
-      
         if (value == 0) {
           widget.index = value;
-        
+
           setState(() {});
           context.goNamed("homePage");
         }
         if (value == 1) {
           widget.index = value;
-        
+
           // setState(() {});
           // context.goNamed("addHome");
         }
@@ -39,8 +46,8 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
           widget.index = value;
           setState(() {});
           context.goNamed("editHome");
-        } 
-        if(value==3){
+        }
+        if (value == 3) {
           widget.index == value;
           setState(() {});
           context.goNamed("profile");
@@ -55,6 +62,8 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
     );
   }
 }
+
+//Function()
 
 BottomNavigationBarItem buildNav(String svg, String? label) {
   return BottomNavigationBarItem(
