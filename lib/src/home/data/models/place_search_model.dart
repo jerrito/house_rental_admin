@@ -4,20 +4,23 @@ class PlaceSearchModel extends PlaceSearch {
   const PlaceSearchModel({required super.results});
   factory PlaceSearchModel.fromJson(Map<String, dynamic>? json) =>
       PlaceSearchModel(
-        results:json?["results"].map<ResultModel>((e)=>
-        ResultModel.fromJson(e)).toList(),
+        results: json?["results"]
+            .map<ResultModel>((e) => ResultModel.fromJson(e))
+            .toList(),
       );
 }
 
 class ResultModel extends Result {
   const ResultModel({
-    required super.location,
+    required super.geometry,
     required super.formatedAddress,
+    required super.name
   });
 
   factory ResultModel.fromJson(Map<String, dynamic>? json) => ResultModel(
-        location: LocationModel.fromJson(json?["geometry"]),
-        formatedAddress: json?["formated_address"],
+        geometry: GeometryModel.fromJson(json?["geometry"]),
+        formatedAddress: json?["formatted_address"],
+        name: json?["name"]
       );
 }
 

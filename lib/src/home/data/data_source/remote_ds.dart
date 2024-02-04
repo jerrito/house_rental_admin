@@ -106,8 +106,9 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
 
   @override
   Future<PlaceSearchModel> placeSearch(Map<String, dynamic> params) async {
-    final response = await http.get(Uri.parse("https://maps.googleapis.com/maps/api/place/textsearch/json?location=42.3675294%2C-71.186966&query=123%20main%20street&radius=10000&key=AIzaSyAN1qK_omx8p1g59BpEHJ2tsuirpFNpvns"));
-
+    final response = await http.get(Uri.parse(
+        "https://maps.googleapis.com/maps/api/place/textsearch/json?location=7.9465%2C1.0232°&&query=${params["place"]}&region=gh&radius=10000&key=AIzaSyAN1qK_omx8p1g59BpEHJ2tsuirpFNpvns"));
+   
     return PlaceSearchModel.fromJson(jsonDecode(response.body));
   }
 }

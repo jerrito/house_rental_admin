@@ -117,6 +117,7 @@ class HomeRepositoryImpl implements HomeRepository {
     if (await networkInfo.isConnected) {
       try {
         final response = await homeRemoteDataSource.placeSearch(params);
+        
         return Right(response);
       } catch (e) {
         return Left(e.toString());

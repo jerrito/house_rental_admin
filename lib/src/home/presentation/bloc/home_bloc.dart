@@ -14,10 +14,10 @@ import 'package:house_rental_admin/src/home/domain/usecases/place_search.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/update_house.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/upload_multiple_images.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 part 'home_event.dart';
 part 'home_state.dart';
-
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
+class HomeBloc extends Bloc<HomeEvent, HomeState>  {
   final GetProfileCamera getProfileCamera;
   final GetProfileGallery getProfileGallery;
   final AddMultipleImage addMultipleImage;
@@ -152,8 +152,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           (response) => PlaceSearchLoaded(
             placeSearch: response
           ),
+          
         ),
+        
       );
+      transformer:restartable();
     });
   }
 }

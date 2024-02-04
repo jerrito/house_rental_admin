@@ -99,7 +99,9 @@ GoRouter goRouter() {
               );
               },
               routes: [
-                GoRoute(path: "map",
+                GoRoute(
+                  path:"map",
+                name:"map",
                 builder: (context, state) => const SelectFromMapPage(),),
               ]
             ),

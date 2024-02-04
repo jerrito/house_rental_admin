@@ -12,11 +12,25 @@ import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 buildSelectLocation(BuildContext context) {
   TextEditingController controller = TextEditingController();
   final homeBloc = locator<HomeBloc>();
-  return showModalBottomSheet(
+  return  showModalBottomSheet(
+    elevation: 1.0,
+    isScrollControlled: true,
       context: context,
       builder: (context) {
         return Container(
-            height: Sizes().height(context, 0.7),
+             height: Sizes().height(context, 0.85),
+              padding: EdgeInsets.symmetric(
+        horizontal: Sizes().width(context, 0.054),
+        vertical: Sizes().height(context, 0.02),
+      ),
+      decoration: BoxDecoration(
+      //  color: shaqBackground,
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(
+            Sizes().height(context, 0.04),
+          ),
+        ),
+      ),
             //  decoration: BoxDecoration(),
             child: Column(
               children: [
@@ -39,14 +53,16 @@ buildSelectLocation(BuildContext context) {
                       },
                       builder: (context, state) {
                         return SizedBox(
-                          width: 300,
+                          width: 290,
                           child: DefaultTextfield(
                             onChanged: (value) {
-                              Map<String, dynamic> params = {};
+                              Map<String, dynamic> params = {
+                                "place":value
+                              };
                               homeBloc.add(PlaceSearchEvent(params: params));
                             },
                             controller: controller,
-                            label: '',
+                            label: 'Search place',
                           ),
                         );
                       },
@@ -62,6 +78,36 @@ buildSelectLocation(BuildContext context) {
                     )
                   ],
                 ),
+                BlocConsumer(
+                    bloc: homeBloc,
+                    listener: (context, state) {
+                      if (state is PlaceSearchError) {
+                        return;
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is PlaceSearchLoaded) {
+                        return Flexible(
+                          child: ListView.builder(
+                            itemCount: state.placeSearch.results?.length ?? 0,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, item) {
+                            final data = state.placeSearch.results?[item];
+                            return ListTile(
+                              onTap: () {
+                                print(data?.geometry?.location.lat);
+                              },
+                              //leading: ,
+                              title: Text(data?.name ?? ""),
+                              subtitle: Text(data?.formatedAddress ?? ""),
+                            );
+                          }),
+                        );
+                      }
+                      ;
+                      return SizedBox();
+                    })
               ],
             ));
       });

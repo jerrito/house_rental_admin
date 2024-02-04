@@ -9,21 +9,29 @@ class PlaceSearch extends Equatable {
 }
 
 class Result extends Equatable {
-  final Location? location;
+  final Geometry? geometry;
   final String? formatedAddress;
+  final String? name;
 
-  const Result({required this.location, required this.formatedAddress});
+  const Result({
+    required this.geometry,
+    required this.formatedAddress,
+    required this.name,
+  });
 
   @override
-  List<Object?> get props => [location, formatedAddress];
+  List<Object?> get props => [
+        geometry,
+        formatedAddress,
+        name
+      ];
 }
 
 class Geometry extends Equatable {
   final Location location;
 
- const Geometry({required this.location});
+  const Geometry({required this.location});
   @override
-  // TODO: implement props
   List<Object?> get props => [location];
 }
 
