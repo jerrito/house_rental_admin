@@ -14,6 +14,7 @@ import 'package:house_rental_admin/src/home/presentation/pages/add_home.dart';
 import 'package:house_rental_admin/src/home/presentation/pages/edit_home.dart';
 import 'package:house_rental_admin/src/home/presentation/pages/home_page.dart';
 import 'package:house_rental_admin/src/home/presentation/pages/profile.dart';
+import 'package:house_rental_admin/src/home/presentation/widgets/select_from_map.dart';
 
 GoRouter goRouter() {
   return GoRouter(initialLocation: "/", routes: [
@@ -97,6 +98,10 @@ GoRouter goRouter() {
                 phoneNumber: state.uri.queryParameters["phoneNumber"].toString(),
               );
               },
+              routes: [
+                GoRoute(path: "map",
+                builder: (context, state) => const SelectFromMapPage(),),
+              ]
             ),
 
              GoRoute(

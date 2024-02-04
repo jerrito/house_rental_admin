@@ -4,11 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_rental_admin/core/usecase/usecase.dart';
 import 'package:house_rental_admin/src/home/data/models/house_model.dart';
 import 'package:house_rental_admin/src/home/domain/entities/house.dart';
+import 'package:house_rental_admin/src/home/domain/entities/place_search.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/add_house.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/add_multiple_image.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_all_houses.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_camera.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_gallery.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/place_search.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/update_house.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/upload_multiple_images.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,7 +25,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final AddHouse addHouse;
   final UploadMultipleImages uploadMultipleImages;
   final UpdateHouse updateHouse;
-
+  final SearchPlace placeSearch;
   HomeBloc({
     required this.getAllHouses,
     required this.addMultipleImage,
@@ -32,6 +34,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required this.addHouse,
     required this.uploadMultipleImages,
     required this.updateHouse,
+    required this.placeSearch,
   }) : super(HomeInitState()) {
     //!GET PROFILE Camera
     on<GetProfileCameraEvent>((event, emit) async {
@@ -135,6 +138,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         response.fold(
           (error) => UpdateHouseError(errorMessage: error),
           (response) => UpdateHouseLoaded(),
+        ),
+      );
+    });
+
+    on<PlaceSearchEvent>((event, emit) async {
+      emit(PlaceSearchLoading());
+      final response = await placeSearch.call(event.params);
+
+      emit(
+        response.fold(
+          (error) => PlaceSearchError(errorMessage: error),
+          (response) => PlaceSearchLoaded(
+            placeSearch: response
+          ),
         ),
       );
     });

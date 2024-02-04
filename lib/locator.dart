@@ -15,6 +15,7 @@ import 'package:house_rental_admin/src/authentication/domain/usecases/signin.dar
 import 'package:house_rental_admin/src/authentication/domain/usecases/get_cache_data.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/phone_number_login.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/signup.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/place_search.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/update_house.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/upload_multiple_images.dart';
 import 'package:house_rental_admin/src/authentication/domain/usecases/verify_number.dart';
@@ -65,12 +66,18 @@ Future<void> initDependencies() async {
       getAllHouses: locator(),
       uploadMultipleImages: locator(),
       updateHouse: locator(),
+      placeSearch: locator(),
     ),
   );
 
   //usecases
 
-   locator.registerLazySingleton(
+  locator.registerLazySingleton(
+    () => SearchPlace(
+      repository: locator(),
+    ),
+  );
+  locator.registerLazySingleton(
     () => UpdateHouse(
       repository: locator(),
     ),
@@ -81,7 +88,7 @@ Future<void> initDependencies() async {
       repository: locator(),
     ),
   );
-  
+
   locator.registerLazySingleton(
     () => UploadMultipleImages(
       repository: locator(),

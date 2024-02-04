@@ -6,6 +6,7 @@ import 'package:house_rental_admin/src/home/data/data_source/localds.dart';
 import 'package:house_rental_admin/src/home/data/data_source/remote_ds.dart';
 import 'package:house_rental_admin/src/home/data/models/house_model.dart';
 import 'package:house_rental_admin/src/home/domain/entities/house.dart';
+import 'package:house_rental_admin/src/home/domain/entities/place_search.dart';
 import 'package:house_rental_admin/src/home/domain/repository/home_repository.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -104,6 +105,21 @@ class HomeRepositoryImpl implements HomeRepository {
         return Left(
           e.toString(),
         );
+      }
+    } else {
+      return Left(networkInfo.noNetworkMessage);
+    }
+  }
+
+  @override
+  Future<Either<String, PlaceSearch>> placeSearch(
+      Map<String, dynamic> params) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final response = await homeRemoteDataSource.placeSearch(params);
+        return Right(response);
+      } catch (e) {
+        return Left(e.toString());
       }
     } else {
       return Left(networkInfo.noNetworkMessage);

@@ -82,3 +82,17 @@ class UpdateHouseError extends HomeState{
   UpdateHouseError({required this.errorMessage});
 }
 class UpdateHouseLoaded extends HomeState{}
+
+
+class PlaceSearchLoading extends HomeState{}
+class PlaceSearchError extends HomeState{
+
+  final String errorMessage;
+  PlaceSearchError({required this.errorMessage});
+}
+class PlaceSearchLoaded extends HomeState{
+  final PlaceSearch placeSearch;
+
+  PlaceSearchLoaded({required this.placeSearch});
+
+}

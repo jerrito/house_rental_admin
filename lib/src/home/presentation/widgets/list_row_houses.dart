@@ -28,8 +28,8 @@ class HouseRowDetails extends StatelessWidget {
         child: Column(
           children: [
             Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                //mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                //mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ClipRRect(
                       borderRadius: BorderRadius.circular(10),
@@ -44,7 +44,8 @@ class HouseRowDetails extends StatelessWidget {
                     0.02,
                   ),
                   Column(
-                      mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                      //mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(houseName,

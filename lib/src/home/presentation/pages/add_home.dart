@@ -14,9 +14,11 @@ import 'package:house_rental_admin/core/usecase/usecase.dart';
 import 'package:house_rental_admin/core/widgets/bottom_sheet.dart';
 import 'package:house_rental_admin/locator.dart';
 import 'package:house_rental_admin/src/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:house_rental_admin/src/authentication/presentation/widgets/default_button.dart';
 import 'package:house_rental_admin/src/authentication/presentation/widgets/default_textfield.dart';
 import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:house_rental_admin/src/home/presentation/widgets/build_select_location.dart';
 
 class AddHomePage extends StatefulWidget {
   final String id, phoneNumber ,name;
@@ -251,6 +253,15 @@ class _AddHomePageState extends State<AddHomePage> {
                         ),
                       );
                     }),
+              ),
+              Padding(
+                padding:EdgeInsets.symmetric(horizontal: Sizes().width(context,0.04),),
+                child:DefaultButton(
+                  label: "Add Location",
+                  onTap: (){
+                    buildSelectLocation(context);
+                  },
+                )
               ),
               Padding(
                 padding: EdgeInsets.symmetric(
