@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:house_rental_admin/core/apis/api_key.dart';
 import 'package:house_rental_admin/src/home/data/models/house_model.dart';
 import 'package:house_rental_admin/src/home/data/models/place_search_model.dart';
 import "package:http/http.dart" as http;
@@ -19,6 +20,8 @@ abstract class HomeRemoteDataSource {
   Future<void> updateHouse(Map<String, dynamic> params);
 
   Future<PlaceSearchModel> placeSearch(Map<String, dynamic> params);
+
+  //Future<GetPlace> ;
 }
 
 class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
@@ -107,8 +110,10 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
   @override
   Future<PlaceSearchModel> placeSearch(Map<String, dynamic> params) async {
     final response = await http.get(Uri.parse(
-        "https://maps.googleapis.com/maps/api/place/textsearch/json?location=7.9465%2C1.0232°&&query=${params["place"]}&region=gh&radius=10000&key=AIzaSyAN1qK_omx8p1g59BpEHJ2tsuirpFNpvns"));
+        "https://maps.googleapis.com/maps/api/place/textsearch/json?location=7.9465%2C1.0232°&&query=${params["place"]}&region=gh&radius=10000&key=$api"));
    
     return PlaceSearchModel.fromJson(jsonDecode(response.body));
   }
+
+
 }
