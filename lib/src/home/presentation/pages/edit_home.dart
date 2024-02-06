@@ -23,7 +23,6 @@ class EditHomePage extends StatefulWidget {
   final HouseDetail house;
   const EditHomePage({
     super.key,
-    
     required this.house,
   });
 
@@ -43,6 +42,19 @@ class _EditHomePageState extends State<EditHomePage> {
   bool isImageAvailable = true;
   List<String> images = [];
   @override
+  void initState() {
+    super.initState();
+    homeNameController.text = widget.house.houseName ?? "";
+    descriptionController.text = widget.house.description ?? "";
+    amountController.text = widget.house.amount.toString();
+    bedRoomController.text = widget.house.bedRoomCount.toString();
+    bathRoomController.text = widget.house.bathRoomCount.toString();
+    for (int i = 0; i < widget.house.images!.length;i++) {
+      images.add(widget.house.images![i]);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomSheet: BlocConsumer(
@@ -56,9 +68,10 @@ class _EditHomePageState extends State<EditHomePage> {
               "bed_room_count": bedRoomController.text,
               "bath_room_count": bathRoomController.text,
               "images": state.imageURL,
-              "id": widget.house.amount
+              "id": widget.house.amount,
+              "id2":widget.house.description,
             };
-            homeBloc.add(AddHomeEvent(params: params));
+            homeBloc.add(UpdateHouseEvent(params: params));
           }
 
           if (state is UpLoadMultipleImageError) {
@@ -95,7 +108,7 @@ class _EditHomePageState extends State<EditHomePage> {
       //   index: 1,
       // ),
       appBar: AppBar(
-        title: const Text("Add Home or Room"),
+        title: const Text("Edit Home or Room"),
       ),
       body: FormBuilder(
         key: formKey,
@@ -106,8 +119,7 @@ class _EditHomePageState extends State<EditHomePage> {
                 context.goNamed("homePage");
               }
 
-              if (state is AddHomeError) {
-              }
+              if (state is AddHomeError) {}
             },
             bloc: homeBloc,
             builder: (context, state) {
@@ -287,6 +299,8 @@ class _EditHomePageState extends State<EditHomePage> {
                                     itemBuilder: (context, index, value) {
                                       final paths = state.files[index].path;
 
+
+
                                       return Container(
                                         padding: EdgeInsets.symmetric(
                                             horizontal:
@@ -310,26 +324,38 @@ class _EditHomePageState extends State<EditHomePage> {
                                   ),
                                 );
                               }
-                              return Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: Sizes().width(context, 0.04)),
-                                child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal:
-                                            Sizes().width(context, 0.08)),
-                                    width: 180,
-                                    height: 150,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: searchTextColor3,
+                              return SizedBox(
+                                  width: double.infinity,
+                                  height: 150,
+                                  child: CarouselSlider.builder(
+                                    itemCount: images.length,
+                                    itemBuilder: (context, index, value) {
+                                      final paths = images[index];
+
+                                      
+
+                                      return Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal:
+                                                Sizes().width(context, 0.04)),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          child: Image.network(
+                                            paths,
+                                            fit: BoxFit.cover,
+                                            width: double.infinity,
+                                            height: 150,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    options: CarouselOptions(
+                                      height: 150,
+                                      reverse: true,
                                     ),
-                                    child: GestureDetector(
-                                        onTap: () {
-                                          homeBloc.add(AddMultipleImageEvent(
-                                              params: NoParams()));
-                                        },
-                                        child: SvgPicture.asset(cameraSVG))),
-                              );
+                                  ),
+                                );
                             },
                             listener: (BuildContext context, state) {
                               if (state is AddMultipleImageError) {

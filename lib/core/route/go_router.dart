@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:go_router/go_router.dart';
 import 'package:house_rental_admin/connection_page.dart';
 import 'package:house_rental_admin/src/authentication/data/models/owner_model.dart';
@@ -12,6 +14,7 @@ import 'package:house_rental_admin/src/home/presentation/pages/add_home.dart';
 import 'package:house_rental_admin/src/home/presentation/pages/edit_home.dart';
 import 'package:house_rental_admin/src/home/presentation/pages/home_page.dart';
 import 'package:house_rental_admin/src/home/presentation/pages/profile.dart';
+import 'package:house_rental_admin/src/home/presentation/widgets/select_from_map.dart';
 
 GoRouter goRouter() {
   return GoRouter(initialLocation: "/", routes: [
@@ -91,9 +94,16 @@ GoRouter goRouter() {
               builder: (context, state) {
               return   AddHomePage(
                 id:state.uri.queryParameters["id"].toString(),
+                name:state.uri.queryParameters["name"].toString(),
                 phoneNumber: state.uri.queryParameters["phoneNumber"].toString(),
               );
               },
+              routes: [
+                GoRoute(
+                  path:"map",
+                name:"map",
+                builder: (context, state) => const SelectFromMapPage(),),
+              ]
             ),
 
              GoRoute(
@@ -101,7 +111,7 @@ GoRouter goRouter() {
               name: "editHome",
               builder: (context, state) {
               return   EditHomePage(
-               house:HouseDetailModel.fromJson(const {}),
+               house:jsonDecode(state.uri.queryParameters["house"].toString(),),
 
               );
               },

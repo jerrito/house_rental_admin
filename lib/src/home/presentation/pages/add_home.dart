@@ -14,17 +14,20 @@ import 'package:house_rental_admin/core/usecase/usecase.dart';
 import 'package:house_rental_admin/core/widgets/bottom_sheet.dart';
 import 'package:house_rental_admin/locator.dart';
 import 'package:house_rental_admin/src/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:house_rental_admin/src/authentication/presentation/widgets/default_button.dart';
 import 'package:house_rental_admin/src/authentication/presentation/widgets/default_textfield.dart';
 import 'package:house_rental_admin/src/home/presentation/bloc/home_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:house_rental_admin/src/home/presentation/widgets/build_select_location.dart';
 
 class AddHomePage extends StatefulWidget {
-  final String id, phoneNumber;
+  final String id, phoneNumber ,name;
   const AddHomePage({
     super.key,
     required this.id,
     required this.phoneNumber,
-  });
+    required this.name
+  }); 
 
   @override
   State<AddHomePage> createState() => _AddHomePageState();
@@ -45,6 +48,7 @@ class _AddHomePageState extends State<AddHomePage> {
   @override
   void initState() {
     print("${widget.id} jj");
+    print("${widget.phoneNumber} jj");
     
     super.initState();
   }
@@ -63,7 +67,12 @@ class _AddHomePageState extends State<AddHomePage> {
               "bed_room_count": num.parse(bedRoomController.text),
               "bath_room_count": num.parse(bathRoomController.text),
               "images": state.imageURL,
-              "id": widget.id
+              "owner": widget.name,
+              "phone_number": widget.phoneNumber,
+              "lat": "",
+              "long": "",
+              "category":""
+              //"id": widget.id
             };
             homeBloc.add(
               AddHomeEvent(params: params),
@@ -101,7 +110,7 @@ class _AddHomePageState extends State<AddHomePage> {
             );
           }
           if (state is UpLoadMultipleImageLoading) {
-            const Center(child: CircularProgressIndicator());
+          return  const Center(child: CircularProgressIndicator());
           }
           return bottomSheetButton(
             context: context,
@@ -244,6 +253,15 @@ class _AddHomePageState extends State<AddHomePage> {
                         ),
                       );
                     }),
+              ),
+              Padding(
+                padding:EdgeInsets.symmetric(horizontal: Sizes().width(context,0.04),),
+                child:DefaultButton(
+                  label: "Add Location",
+                  onTap: (){
+                    buildSelectLocation(context);
+                  },
+                )
               ),
               Padding(
                 padding: EdgeInsets.symmetric(

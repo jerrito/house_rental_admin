@@ -4,24 +4,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:house_rental_admin/core/usecase/usecase.dart';
 import 'package:house_rental_admin/src/home/data/models/house_model.dart';
 import 'package:house_rental_admin/src/home/domain/entities/house.dart';
+import 'package:house_rental_admin/src/home/domain/entities/place_search.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/add_house.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/add_multiple_image.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_all_houses.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_camera.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/get_profile_gallery.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/place_search.dart';
+import 'package:house_rental_admin/src/home/domain/usecases/update_house.dart';
 import 'package:house_rental_admin/src/home/domain/usecases/upload_multiple_images.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 part 'home_event.dart';
 part 'home_state.dart';
-
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
+class HomeBloc extends Bloc<HomeEvent, HomeState>  {
   final GetProfileCamera getProfileCamera;
   final GetProfileGallery getProfileGallery;
   final AddMultipleImage addMultipleImage;
   final GetAllHouses getAllHouses;
   final AddHouse addHouse;
   final UploadMultipleImages uploadMultipleImages;
-
+  final UpdateHouse updateHouse;
+  final SearchPlace placeSearch;
   HomeBloc({
     required this.getAllHouses,
     required this.addMultipleImage,
@@ -29,7 +33,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required this.getProfileGallery,
     required this.addHouse,
     required this.uploadMultipleImages,
-
+    required this.updateHouse,
+    required this.placeSearch,
   }) : super(HomeInitState()) {
     //!GET PROFILE Camera
     on<GetProfileCameraEvent>((event, emit) async {
@@ -100,17 +105,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(GetAllHousesLoading());
       final response = await getAllHouses.call(event.params);
 
-      emit(response.fold((error) =>  GetAllHouseError(errorMessage: error),
-          (response) => GetAllHousesLoaded(
-            houses: response
-          ),),);
+      emit(
+        response.fold(
+          (error) => GetAllHouseError(errorMessage: error),
+          (response) => GetAllHousesLoaded(houses: response),
+        ),
+      );
     });
 
     //!UPLOAD MULTIPLE IMAGES TO CLOUD
     on<UpLoadMultipleImageEvent>((event, emit) async {
-      emit(
-        UpLoadMultipleImageLoading(),
-      );
+      emit(UpLoadMultipleImageLoading());
       final response = await uploadMultipleImages.call(
         event.params,
       );
@@ -123,6 +128,35 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           ),
         ),
       );
+    });
+
+    on<UpdateHouseEvent>((event, emit) async {
+      emit(UpdateHouseLoading());
+      final response = await updateHouse.call(event.params);
+
+      emit(
+        response.fold(
+          (error) => UpdateHouseError(errorMessage: error),
+          (response) => UpdateHouseLoaded(),
+        ),
+      );
+    });
+
+    on<PlaceSearchEvent>((event, emit) async {
+      emit(PlaceSearchLoading());
+      final response = await placeSearch.call(event.params);
+
+      emit(
+        response.fold(
+          (error) => PlaceSearchError(errorMessage: error),
+          (response) => PlaceSearchLoaded(
+            placeSearch: response
+          ),
+          
+        ),
+        
+      );
+      transformer:restartable();
     });
   }
 }

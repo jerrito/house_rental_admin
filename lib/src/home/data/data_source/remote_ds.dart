@@ -1,17 +1,27 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:house_rental_admin/core/apis/api_key.dart';
 import 'package:house_rental_admin/src/home/data/models/house_model.dart';
+import 'package:house_rental_admin/src/home/data/models/place_search_model.dart';
+import "package:http/http.dart" as http;
 
 abstract class HomeRemoteDataSource {
   Future<DocumentReference<HouseDetailModel>?> addHouse(
       Map<String, dynamic> params);
 
-  Future<QuerySnapshot<HouseDetailModel>> getAllHouses(Map<String, dynamic> params);
+  Future<QuerySnapshot<HouseDetailModel>> getAllHouses(
+      Map<String, dynamic> params);
 
-    Future<List<String>> upLoadMultipleImages(Map<String, dynamic> params);
+  Future<List<String>> upLoadMultipleImages(Map<String, dynamic> params);
 
+  Future<void> updateHouse(Map<String, dynamic> params);
+
+  Future<PlaceSearchModel> placeSearch(Map<String, dynamic> params);
+
+  //Future<GetPlace> ;
 }
 
 class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
@@ -27,14 +37,15 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
   Future<DocumentReference<HouseDetailModel>> addHouse(
       Map<String, dynamic> params) async {
     final response = await FirebaseFirestore.instance
-        .collection('houseRentalAdminAccount')
-        .doc(params["id"])
+        // .collection('houseRentalAdminAccount')
+        // .doc(params["id"])
         .collection("houses")
         .withConverter<HouseDetailModel>(
-        fromFirestore: (snapshot, _) => HouseDetailModel.fromJson(snapshot.data()!),
-        toFirestore: (house, _) => house.toMap(),
-      )
-      .add(HouseDetailModel.fromJson(params));
+          fromFirestore: (snapshot, _) =>
+              HouseDetailModel.fromJson(snapshot.data()!),
+          toFirestore: (house, _) => house.toMap(),
+        )
+        .add(HouseDetailModel.fromJson(params));
     return response;
   }
 
@@ -42,9 +53,8 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
   Future<QuerySnapshot<HouseDetailModel>> getAllHouses(
       Map<String, dynamic> params) async {
     final response = await FirebaseFirestore.instance
-        .collection('houseRentalAdminAccount')
-        .doc(params["id"])
         .collection("houses")
+        .where("phone_number", isEqualTo: params["phone_number"])
         .withConverter<HouseDetailModel>(
           fromFirestore: (snapshot, _) =>
               HouseDetailModel.fromJson(snapshot.data()!),
@@ -58,10 +68,13 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
   @override
   Future<List<String>> upLoadMultipleImages(Map<String, dynamic> params) async {
     //Upload file
-    final upLoadPath = FirebaseStorage.instance.ref().child(
+    final upLoadPath = FirebaseStorage.instance
+        .ref()
+        .child(
           params["phone_number"],
-        ).child("houses");
-    List<String> returnURL=[];
+        )
+        .child("houses");
+    List<String> returnURL = [];
 
     for (int i = 0; i < params["images"]; i++) {
       final upLoadTask = upLoadPath.putFile(
@@ -69,8 +82,7 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
       );
 
       await upLoadTask.whenComplete(
-        () =>
-            upLoadPath.getDownloadURL().then((value) => returnURL.add(value)),
+        () => upLoadPath.getDownloadURL().then((value) => returnURL.add(value)),
       );
     }
 
@@ -78,4 +90,30 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
 
     return returnURL;
   }
+
+  @override
+  Future<void> updateHouse(Map<String, dynamic> params) async {
+    final response = await FirebaseFirestore.instance
+        //.collection('houseRentalAdminAccount')
+        .doc(params["id"])
+        .collection("houses")
+        .withConverter<HouseDetailModel>(
+          fromFirestore: (snapshot, _) =>
+              HouseDetailModel.fromJson(snapshot.data()!),
+          toFirestore: (house, _) => house.toMap(),
+        )
+        .doc(params["id2"])
+        .update(params);
+    return response;
+  }
+
+  @override
+  Future<PlaceSearchModel> placeSearch(Map<String, dynamic> params) async {
+    final response = await http.get(Uri.parse(
+        "https://maps.googleapis.com/maps/api/place/textsearch/json?location=7.9465%2C1.0232°&&query=${params["place"]}&region=gh&radius=10000&key=$api"));
+   
+    return PlaceSearchModel.fromJson(jsonDecode(response.body));
+  }
+
+
 }
